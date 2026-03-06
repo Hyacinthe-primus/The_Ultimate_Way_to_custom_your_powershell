@@ -181,7 +181,7 @@ Alice -night    # late-night mode
 train
 loco
 ```
-This is an alternative to `sl` command which is present Linux
+This is an alternative to `sl` command which is present on Linux
 
 #### `hack` — fake hacking sequence with progress bars, scan lines, and burst text
 
