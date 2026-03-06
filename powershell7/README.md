@@ -32,7 +32,7 @@ Same Catppuccin Mocha theme, but with more commands, animations, and a personali
 ![Preview 10](screen10.png)
 ![Preview 11](screen2.png)
 
-### Demo
+## Demo
 
 [![Watch the demo](screen11.png)](demo.mp4)
 
