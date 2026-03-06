@@ -95,7 +95,7 @@ New-Item -Path $PROFILE -Type File -Force
 Note: You can have profile.ps1 or Microsoft_PowerShell_profile.ps1 in that location
 
 Copy `Microsoft_PowerShell_profile.ps1` to the location returned by `$PROFILE`.  
-Then create a `profile\` subfolder **next to it** and copy all the `.ps1` files from `profile/` into it:
+Then create a `profile\` subfolder **next to it** and copy all the `.ps1` files from [`profile/`](./profile/) into it:
 
 ```
 Documents\PowerShell\
