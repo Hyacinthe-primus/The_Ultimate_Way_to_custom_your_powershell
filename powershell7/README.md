@@ -34,9 +34,7 @@ Same Catppuccin Mocha theme, but with more commands, animations, and a personali
 
 ### Demo
 
-<video width="800" controls>
-  <source src="demo.mp4" type="video/mp4">
-</video>
+[![Watch the demo](screen11.png)](demo.mp4)
 
 ---
 
