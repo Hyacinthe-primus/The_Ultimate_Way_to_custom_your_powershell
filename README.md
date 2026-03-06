@@ -125,6 +125,13 @@ This is a Windows security restriction. Fix it by running the following command:
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ```
 
+and
+
+```powershell
+Unblock-File "$env:USERPROFILE/.config/fastfetch/fastfetch-random.ps1"
+```
+
+
 Then close and reopen PowerShell — your profile should load correctly.
 
 ---
