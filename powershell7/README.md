@@ -121,7 +121,7 @@ Windows flags downloaded `.ps1` files as potentially unsafe. Run this once after
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Unblock-File "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
-Unblock-File "$env:USERPROFILE\.config\fastfetch\fastfetch-random.ps1"
+Unblock-File "$env:USERPROFILE\.config\fastfetch\fastfetch-random.ps1" #if you have it
 Get-ChildItem "$env:USERPROFILE\Documents\PowerShell\profile\*.ps1" | Unblock-File
 ```
 
