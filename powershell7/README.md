@@ -324,8 +324,11 @@ If you want a fastfetch configuration, chek the root files
 ## Credits
 
 Built on top of [SleepyCatHey](https://github.com/SleepyCatHey)'s original concept.  
+
 PokéAPI data via [pokeapi.co](https://pokeapi.co).
+
 Custom ASCII art via [patorjk.com](https://patorjk.com/software/taag/#p=display&f=ANSI+Shadow&t=USERNAME&x=none&v=4&h=4&w=80&we=false)
+
 NoCopyrightSounds from [Different Heaven - Safe And Sound](https://youtu.be/13ARO0HDZsQ?si=FshSIxUKBTstkHeC)
 
 ---
