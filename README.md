@@ -101,7 +101,7 @@ Then close the terminal, navigate to that location, and replace the file's conte
 - **PowerShell 7** → use `Microsoft_PowerShell_profile.ps1`
 - **Windows PowerShell 5** → use `Microsoft_PowerShell_profile-ps5.ps1`, but **rename it** to match your profile filename (`Microsoft_PowerShell_profile.ps1` or `profile.ps1`) before placing it
 
-> **Windows PowerShell 5 only:** Save the profile file as **UTF-8 with BOM** in VS Code (click the encoding in the bottom right → "Save with Encoding" → "UTF-8 with BOM"), otherwise special characters and icons won't display correctly.
+> **Windows PowerShell 5 only:** Save the profile file as **UTF-8** in VS Code (click the encoding in the bottom right → "Save with Encoding" → "UTF-8"), otherwise special characters and icons won't display correctly.
 
 ---
 

@@ -47,25 +47,22 @@ $randomAscii = ($asciiFiles | Get-Random).FullName -replace "\\", "/"
 $randomPalette = $palettes | Get-Random
 
 # -------------------------------------------------------
-# 3. Read base config and inject values via string replacement
-#    (PS5 ConvertFrom-Json returns read-only objects)
+# 3. Read base config as raw bytes decoded in UTF-8
+#    to preserve Nerd Font glyphs (multi-byte characters)
+#    then strip BOM if present so fastfetch accepts the JSON
 # -------------------------------------------------------
-$configContent = Get-Content $baseConfig -Raw
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+$rawBytes = [System.IO.File]::ReadAllBytes($baseConfig)
+
+# Strip UTF-8 BOM (EF BB BF) if present
+if ($rawBytes.Length -ge 3 -and $rawBytes[0] -eq 0xEF -and $rawBytes[1] -eq 0xBB -and $rawBytes[2] -eq 0xBF) {
+    $rawBytes = $rawBytes[3..($rawBytes.Length - 1)]
+}
+
+$configContent = $utf8NoBom.GetString($rawBytes)
 
 # Build the color block as a JSON string
-$colorBlock = @"
-{
-  "1": "$($randomPalette['1'])",
-  "2": "$($randomPalette['2'])",
-  "3": "$($randomPalette['3'])",
-  "4": "$($randomPalette['4'])",
-  "5": "$($randomPalette['5'])",
-  "6": "$($randomPalette['6'])",
-  "7": "$($randomPalette['7'])",
-  "8": "$($randomPalette['8'])",
-  "9": "$($randomPalette['9'])"
-}
-"@
+$colorBlock = "{`n  `"1`": `"$($randomPalette['1'])`",`n  `"2`": `"$($randomPalette['2'])`",`n  `"3`": `"$($randomPalette['3'])`",`n  `"4`": `"$($randomPalette['4'])`",`n  `"5`": `"$($randomPalette['5'])`",`n  `"6`": `"$($randomPalette['6'])`",`n  `"7`": `"$($randomPalette['7'])`",`n  `"8`": `"$($randomPalette['8'])`",`n  `"9`": `"$($randomPalette['9'])`"`n}"
 
 # Replace source path via regex
 $configContent = $configContent -replace '"source"\s*:\s*"[^"]*"', ('"source": "' + $randomAscii + '"')
@@ -74,9 +71,9 @@ $configContent = $configContent -replace '"source"\s*:\s*"[^"]*"', ('"source": "
 $configContent = $configContent -replace '"color"\s*:\s*\{[^}]*\}', ('"color": ' + $colorBlock)
 
 # -------------------------------------------------------
-# 4. Save to a temp file and launch fastfetch
+# 4. Save to a temp file (UTF-8 no BOM) and launch fastfetch
 # -------------------------------------------------------
 $tmpConfig = "$env:TEMP\fastfetch-tmp.json"
-[System.IO.File]::WriteAllText($tmpConfig, $configContent, [System.Text.Encoding]::UTF8)
+[System.IO.File]::WriteAllBytes($tmpConfig, $utf8NoBom.GetBytes($configContent))
 
 fastfetch --config $tmpConfig
