@@ -1,10 +1,3 @@
-# ─────────────────────────────────────────
-#  Animations — train, hack, matrix
-# ─────────────────────────────────────────
-# ─────────────────────────────────────────
-#  train / loco — braille train animation
-# ─────────────────────────────────────────
-
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '')]
 param()
 
@@ -33,17 +26,17 @@ function Invoke-TrainAnimation {
         "⠀⠀⠀⠙⠿⠷⣯⣭⣽⣿⠶⠟⠋⠀⠀⠀⠀⠙⠿⣿⣿⣿⠿⠋⠀⠙⠿⣿⣿⣿⠿⠋⠀⠙⢿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠉⠙⠛⠿⠿⠇"
     )
 
-    $trainWidth = 50
+    $trainWidth  = 50
     $screenWidth = [Console]::WindowWidth
     $trainHeight = $trainArt.Count
 
     $ESC = [char]27
     $colors = @(
-        "$ESC[38;2;203;166;247m"  # Mauve
-        "$ESC[38;2;137;180;250m"  # Blue
-        "$ESC[38;2;116;199;236m"  # Sapphire
-        "$ESC[38;2;137;220;235m"  # Sky
-        "$ESC[38;2;148;226;213m"  # Teal
+        "$ESC[38;2;203;166;247m"
+        "$ESC[38;2;137;180;250m"
+        "$ESC[38;2;116;199;236m"
+        "$ESC[38;2;137;220;235m"
+        "$ESC[38;2;148;226;213m"
     )
     $reset = "$ESC[0m"
 
@@ -55,24 +48,20 @@ function Invoke-TrainAnimation {
     try {
         for ($x = -$trainWidth; $x -lt $screenWidth; $x += 2) {
             $colorIdx = [Math]::Abs($x) % $colors.Count
-            $color = $colors[$colorIdx]
+            $color    = $colors[$colorIdx]
 
             for ($row = 0; $row -lt $trainHeight; $row++) {
                 [Console]::SetCursorPosition(0, $startRow + $row)
                 $line = $trainArt[$row]
 
                 if ($x -lt 0) {
-                    $cut = [Math]::Min(-$x, $line.Length)
+                    $cut     = [Math]::Min(-$x, $line.Length)
                     $visible = $line.Substring($cut)
-                    $full = $visible.PadRight($screenWidth)
+                    $full    = $visible.PadRight($screenWidth)
                 } else {
                     $padding = " " * $x
-                    $full = ($padding + $line)
-                    if ($full.Length -gt $screenWidth) {
-                        $full = $full.Substring(0, $screenWidth)
-                    } else {
-                        $full = $full.PadRight($screenWidth)
-                    }
+                    $full    = ($padding + $line)
+                    $full    = if ($full.Length -gt $screenWidth) { $full.Substring(0, $screenWidth) } else { $full.PadRight($screenWidth) }
                 }
 
                 Write-Host "$color$full$reset" -NoNewline
@@ -93,11 +82,6 @@ function Invoke-TrainAnimation {
 function train { Invoke-TrainAnimation }
 function loco  { Invoke-TrainAnimation }
 
-# ─────────────────────────────────────────
-#  hack — fake hacking animation
-#
-#  Usage: hack
-# ─────────────────────────────────────────
 function hack {
     $ESC     = [char]27
     $red     = "$ESC[38;2;243;139;168m"
@@ -194,7 +178,6 @@ function hack {
     }
     Write-Host ""
 
-    # Phase 1: recon
     Type-Line "PHASE 1 — RECONNAISSANCE" $overlay 12
     Write-Host ""
     Scan-Animation "Scanning network       " $overlay 36
@@ -208,7 +191,6 @@ function hack {
     Glitch-Line "✦ Target OS: Ubuntu 22.04 LTS  [KERNEL 5.15.0]" $peach
     Start-Sleep -Milliseconds 400
 
-    # Phase 2: intrusion
     Write-Host ""
     Type-Line "PHASE 2 — INTRUSION" $overlay 12
     Write-Host ""
@@ -223,7 +205,6 @@ function hack {
     Glitch-Line "✦ Reverse shell spawned  ←  10.0.0.47:4444" $green
     Start-Sleep -Milliseconds 300
 
-    # Phase 3: exfiltration
     Write-Host ""
     Type-Line "PHASE 3 — EXFILTRATION" $overlay 12
     Write-Host ""
@@ -242,7 +223,6 @@ function hack {
     Type-Line "✦ API keys, SSH certs, 1,337 credentials: DUMPED" $green 6
     Start-Sleep -Milliseconds 300
 
-    # Phase 4: cleanup
     Write-Host ""
     Type-Line "PHASE 4 — CLEANUP" $overlay 12
     Write-Host ""
@@ -261,15 +241,6 @@ function hack {
     Write-Host ""
 }
 
-# ─────────────────────────────────────────
-#  matrix — matrix rain animation
-#
-#  Usage:
-#    matrix            → full terminal, 25s
-#    matrix -half      → half terminal, 15s
-#    matrix -infinite  → full terminal, infinite (Ctrl+C to quit)
-#    matrix -seconds 60 → full terminal, custom duration
-# ─────────────────────────────────────────
 function matrix {
     param(
         [switch]$infinite,
@@ -288,12 +259,10 @@ function matrix {
     $halfMode    = $half.IsPresent
     $durationSec = if ($infinite) { [int]::MaxValue } elseif ($half) { 15 } else { $seconds }
 
-    $chars = "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEF".ToCharArray()
+    $chars       = "ｦｧｨｩｪｫｬｭｮｯｰｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEF".ToCharArray()
+    $fullWidth   = [Console]::WindowWidth
+    $fullHeight  = [Console]::WindowHeight - 1
 
-    $fullWidth  = [Console]::WindowWidth
-    $fullHeight = [Console]::WindowHeight - 1
-
-    # Intro animation
     Clear-Host
     Write-Host ""
     $title = "[ MATRIX PROTOCOL INITIALISING ]"
@@ -313,24 +282,15 @@ function matrix {
     Write-Host $reset
     Start-Sleep -Milliseconds 300
 
-    if ($halfMode) {
-        Write-Host "  ${teal}MODE${reset}  ${overlay}half-terminal · 15s${reset}"
-    } elseif ($infinite) {
-        Write-Host "  ${mauve}MODE${reset}  ${overlay}full-terminal · infinite  [Ctrl+C to exit]${reset}"
-    } else {
-        Write-Host "  ${green}MODE${reset}  ${overlay}full-terminal · ${durationSec}s${reset}"
-    }
+    if ($halfMode)     { Write-Host "  ${teal}MODE${reset}  ${overlay}half-terminal · 15s${reset}" }
+    elseif ($infinite) { Write-Host "  ${mauve}MODE${reset}  ${overlay}full-terminal · infinite  [Ctrl+C to exit]${reset}" }
+    else               { Write-Host "  ${green}MODE${reset}  ${overlay}full-terminal · ${durationSec}s${reset}" }
     Start-Sleep -Milliseconds 600
 
-    if ($halfMode) {
-        $colStart = 0
-        $colEnd   = [math]::Floor($fullWidth / 2)
-    } else {
-        $colStart = 0
-        $colEnd   = $fullWidth
-    }
-
+    $colStart     = 0
+    $colEnd       = if ($halfMode) { [math]::Floor($fullWidth / 2) } else { $fullWidth }
     $matrixHeight = $fullHeight
+
     $cols = $colStart..($colEnd - 1) | ForEach-Object {
         @{
             pos    = Get-Random -Minimum 0 -Maximum $matrixHeight

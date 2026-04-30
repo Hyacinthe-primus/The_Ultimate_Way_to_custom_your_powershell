@@ -1,8 +1,3 @@
-# ─────────────────────────────────────────
-#  Helpers — Type-Slow, Type-Fast, Pulse-Line
-# ─────────────────────────────────────────
-# Animation helpers — used at startup and inside the welcome sequence
-
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '')]
 param()
 
@@ -28,7 +23,7 @@ function Type-Fast {
 
 function Pulse-Line {
     param([string]$text, [string]$color)
-    $dimC = "$ESC[2m"
+    $dimC  = "$ESC[2m"
     $boldC = "$ESC[1m"
     $pColors = @($overlay, "$dimC$color", $color, "$boldC$color", $color, "$dimC$color", $overlay)
     foreach ($c in $pColors) {

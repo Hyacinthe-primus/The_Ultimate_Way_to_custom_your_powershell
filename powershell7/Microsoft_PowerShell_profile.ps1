@@ -4,9 +4,6 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '')]
 param()
 
-# ─────────────────────────────────────────
-#  UTF-8 Encoding
-# ─────────────────────────────────────────
 try {
     [Console]::InputEncoding  = [System.Text.Encoding]::UTF8
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -16,9 +13,8 @@ try {
 
 Clear-Host
 
-# ─────────────────────────────────────────
 #  Fastfetch
-# ─────────────────────────────────────────
+
 # Optional: fastfetch system info display at startup
 # If you use fastfetch, place your config at: ~/.config/fastfetch/
 # and create a fastfetch-random.ps1 launcher, or replace this block.
@@ -27,9 +23,6 @@ if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
     if (Test-Path $ffScript) { & $ffScript }
 }
 
-# ─────────────────────────────────────────
-#  Load profile modules
-# ─────────────────────────────────────────
 $profileDir = "$PSScriptRoot\profile"
 
 $modules = @(

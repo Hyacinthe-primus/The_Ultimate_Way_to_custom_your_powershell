@@ -1,10 +1,4 @@
-# ─────────────────────────────────────────
-#  pokefetch — Pokémon stats fetcher
-#  Usage: pokefetch [name|id]
-# ─────────────────────────────────────────
-# ─────────────────────────────────────────
-#  pokefetch — random Pokémon info
-# ─────────────────────────────────────────
+# pokefetch — pokefetch [name|id]
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '')]
 param()

@@ -1,15 +1,5 @@
-# ─────────────────────────────────────────
-#  Aliases & utility functions
-#  ll, touch, which, cls, mkcd, hs, show, uptime
-# ─────────────────────────────────────────
-# ─────────────────────────────────────────
-#  Aliases
-# ─────────────────────────────────────────
-
-# ll — detailed file listing
 function ll { Get-ChildItem -Force @args }
 
-# touch — create empty file or update timestamp
 function touch {
     param([string]$path)
     if (Test-Path $path) {
@@ -19,31 +9,19 @@ function touch {
     }
 }
 
-# which — find executable location
 function which {
     param([string]$cmd)
     Get-Command $cmd -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
 }
 
-# cls — clear screen
 function cls { Clear-Host }
 
-# ─────────────────────────────────────────
-#  mkcd — create folder and cd into it
-# ─────────────────────────────────────────
 function mkcd {
     param([Parameter(Mandatory=$true)][string]$dir)
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
     Set-Location $dir
 }
 
-# ─────────────────────────────────────────
-#  hs — history search
-#
-#  Usage:
-#    hs           → show full history
-#    hs git       → filter history by keyword
-# ─────────────────────────────────────────
 function hs {
     param([string]$query = "")
 
@@ -56,10 +34,7 @@ function hs {
     $reset   = "$ESC[0m"
 
     $history = Get-History
-
-    if ($query) {
-        $history = $history | Where-Object { $_.CommandLine -like "*$query*" }
-    }
+    if ($query) { $history = $history | Where-Object { $_.CommandLine -like "*$query*" } }
 
     Write-Host ""
     if ($query) {
@@ -85,16 +60,6 @@ function hs {
 
 function history-search { hs @args }
 
-# ─────────────────────────────────────────
-#  show — file search
-#
-#  Usage:
-#    show filename.txt           → current folder only
-#    show filename               → current folder, all "filename.*"
-#    show -u filename.txt        → user folder (C:\Users\<you>)
-#    show -deep filename.txt     → entire system (C:\)
-#    show -from "C:\path" name   → from a specific folder
-# ─────────────────────────────────────────
 function show {
     param(
         [switch]$u,
@@ -105,35 +70,26 @@ function show {
     )
 
     $ESC      = [char]27
-    $mauve    = "$ESC[38;2;203;166;247m"  # #CBA6F7
-    $pink     = "$ESC[38;2;245;194;231m"  # #F5C2E7
-    $peach    = "$ESC[38;2;250;179;135m"  # #FAB387
-    $yellow   = "$ESC[38;2;249;226;175m"  # #F9E2AF
-    $green    = "$ESC[38;2;166;227;161m"  # #A6E3A1
-    $teal     = "$ESC[38;2;148;226;213m"  # #94E2D5
-    $sky      = "$ESC[38;2;137;220;235m"  # #89DCEB
-    $sapphire = "$ESC[38;2;116;199;236m"  # #74C7EC
-    $lavender = "$ESC[38;2;180;190;254m"  # #B4BEFE
-    $red      = "$ESC[38;2;243;139;168m"  # #F38BA8
-    $overlay  = "$ESC[38;2;108;112;134m"  # #6C7086
+    $mauve    = "$ESC[38;2;203;166;247m"
+    $pink     = "$ESC[38;2;245;194;231m"
+    $peach    = "$ESC[38;2;250;179;135m"
+    $yellow   = "$ESC[38;2;249;226;175m"
+    $green    = "$ESC[38;2;166;227;161m"
+    $teal     = "$ESC[38;2;148;226;213m"
+    $sky      = "$ESC[38;2;137;220;235m"
+    $sapphire = "$ESC[38;2;116;199;236m"
+    $lavender = "$ESC[38;2;180;190;254m"
+    $red      = "$ESC[38;2;243;139;168m"
+    $overlay  = "$ESC[38;2;108;112;134m"
     $bold     = "$ESC[1m"
     $reset    = "$ESC[0m"
 
-    if ($from) {
-        $searchPath = $from
-    } elseif ($u) {
-        $searchPath = $env:USERPROFILE
-    } elseif ($deep) {
-        $searchPath = "C:\"
-    } else {
-        $searchPath = $PWD.Path
-    }
+    if ($from)       { $searchPath = $from }
+    elseif ($u)      { $searchPath = $env:USERPROFILE }
+    elseif ($deep)   { $searchPath = "C:\" }
+    else             { $searchPath = $PWD.Path }
 
-    if ($name -match "\.") {
-        $pattern = $name
-    } else {
-        $pattern = "$name.*"
-    }
+    $pattern = if ($name -match "\.") { $name } else { "$name.*" }
 
     Write-Host ""
     Write-Host "  ${mauve}${bold}◆ SHOW${reset}  ${overlay}searching for${reset} ${peach}${bold}$pattern${reset}  ${overlay}in${reset}  ${sky}$searchPath${reset}"
@@ -173,9 +129,6 @@ function show {
     Write-Host ""
 }
 
-# ─────────────────────────────────────────
-#  uptime — how long the system has been running
-# ─────────────────────────────────────────
 function uptime {
     $ESC      = [char]27
     $mauve    = "$ESC[38;2;203;166;247m"
@@ -191,15 +144,13 @@ function uptime {
 
     $bootTime = (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
     $up       = (Get-Date) - $bootTime
+    $days     = $up.Days
+    $hours    = $up.Hours
+    $minutes  = $up.Minutes
 
-    $days    = $up.Days
-    $hours   = $up.Hours
-    $minutes = $up.Minutes
-
-    # Animated bar fill
     function Animate-Bar {
         param([string]$label, [string]$color, [int]$value, [int]$maxVal, [int]$width = 24)
-        $pct    = if ($maxVal -gt 0) { [math]::Min([math]::Round(($value / $maxVal) * $width), $width) } else { 0 }
+        $pct = if ($maxVal -gt 0) { [math]::Min([math]::Round(($value / $maxVal) * $width), $width) } else { 0 }
         [Console]::Write("  ${overlay}$label${reset}  [${overlay}$("░" * $width)${reset}]  ")
         Start-Sleep -Milliseconds 80
         for ($i = 1; $i -le $pct; $i++) {

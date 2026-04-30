@@ -1,9 +1,3 @@
-# ─────────────────────────────────────────
-#  CommandNotFound handler — Tobi / Madara
-# ─────────────────────────────────────────
-# ─────────────────────────────────────────
-#  Wrong Command Handler — Tobi / Madara
-# ─────────────────────────────────────────
 $script:TobiRunning = $false
 
 $ExecutionContext.InvokeCommand.CommandNotFoundAction = {
@@ -12,7 +6,6 @@ $ExecutionContext.InvokeCommand.CommandNotFoundAction = {
     $commandLookupEventArgs.StopSearch = $true
 
     if ($commandName -like 'get-*' -or $commandName -like '.\*' -or $commandName -like './*') { return }
-
     if ($script:TobiRunning) { return }
     $script:TobiRunning = $true
 
@@ -25,9 +18,7 @@ $ExecutionContext.InvokeCommand.CommandNotFoundAction = {
     $bold   = "$ESC[1m"
     $reset  = "$ESC[0m"
 
-    $cmd = $commandName
-
-    # Check if a local file with that name exists
+    $cmd         = $commandName
     $localExists = (Test-Path ".\$cmd.ps1") -or (Test-Path ".\$cmd.exe") -or (Test-Path ".\$cmd.bat") -or (Test-Path ".\$cmd")
 
     if ($localExists) {

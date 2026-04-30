@@ -1,9 +1,6 @@
-# PowerShell 7 Profile — Catppuccin Mocha Theme
-# Requires: fastfetch, Nerd Font (e.g. JetBrainsMono Nerd Font)
+# PowerShell 7 — Catppuccin Mocha
+# Requires: fastfetch, Nerd Font
 
-# ─────────────────────────────────────────
-#  UTF-8 Encoding
-# ─────────────────────────────────────────
 try {
     [Console]::InputEncoding  = [System.Text.Encoding]::UTF8
     [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -13,26 +10,20 @@ try {
 
 Clear-Host
 
-# ─────────────────────────────────────────
-#  Fastfetch (edit path to match yours)
-# ─────────────────────────────────────────
 if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
     & "$env:USERPROFILE/.config/fastfetch/fastfetch-random.ps1"
 }
 
-# ─────────────────────────────────────────
-#  Welcome message
-# ─────────────────────────────────────────
-$green   = "`e[38;2;166;227;161m"  # #A6E3A1
-$yellow  = "`e[38;2;249;226;175m"  # #F9E2AF
-$mauve   = "`e[38;2;203;166;247m"  # #CBA6F7
-$pink    = "`e[38;2;245;194;231m"  # #F5C2E7
-$peach   = "`e[38;2;250;179;135m"  # #FAB387
+$green   = "`e[38;2;166;227;161m"
+$yellow  = "`e[38;2;249;226;175m"
+$mauve   = "`e[38;2;203;166;247m"
+$pink    = "`e[38;2;245;194;231m"
+$peach   = "`e[38;2;250;179;135m"
 $reset   = "`e[0m"
 
 $culture = [System.Globalization.CultureInfo]::GetCultureInfo("en-US")
-$date = (Get-Date).ToString("dddd, MMMM dd yyyy", $culture)
-$time = Get-Date -Format "HH:mm"
+$date    = (Get-Date).ToString("dddd, MMMM dd yyyy", $culture)
+$time    = Get-Date -Format "HH:mm"
 Write-Host ""
 Write-Host "  $green◆$reset  $yellow$date$reset  $mauve$time$reset"
 
@@ -52,14 +43,8 @@ $quote = $quotes | Get-Random
 Write-Host "  $pink✦$reset  $peach$quote$reset"
 Write-Host ""
 
-# ─────────────────────────────────────────
-#  Aliases
-# ─────────────────────────────────────────
-
-# ll — detailed file listing
 function ll { Get-ChildItem -Force @args }
 
-# touch — create empty file or update timestamp
 function touch {
     param([string]$path)
     if (Test-Path $path) {
@@ -69,25 +54,20 @@ function touch {
     }
 }
 
-# which — find executable location
 function which {
     param([string]$cmd)
     Get-Command $cmd -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
 }
 
-# cls — clear screen
 function cls { Clear-Host }
 
-# ─────────────────────────────────────────
-#  show — file search
-#
-#  Usage:
-#    show filename.txt           → current folder only
-#    show filename               → current folder, all "filename.*"
-#    show -u filename.txt        → user folder (C:\Users\<you>)
-#    show -deep filename.txt     → entire system (C:\)
-#    show -from "C:\path" name   → from a specific folder
-# ─────────────────────────────────────────
+# show — file search
+# Usage:
+#   show filename.txt           → current folder only
+#   show filename               → current folder, all "filename.*"
+#   show -u filename.txt        → user folder (C:\Users\<you>)
+#   show -deep filename.txt     → entire system (C:\)
+#   show -from "C:\path" name   → from a specific folder
 function show {
     param(
         [switch]$u,
@@ -97,35 +77,26 @@ function show {
         [string]$name
     )
 
-    $mauve    = "`e[38;2;203;166;247m"  # #CBA6F7
-    $pink     = "`e[38;2;245;194;231m"  # #F5C2E7
-    $peach    = "`e[38;2;250;179;135m"  # #FAB387
-    $yellow   = "`e[38;2;249;226;175m"  # #F9E2AF
-    $green    = "`e[38;2;166;227;161m"  # #A6E3A1
-    $teal     = "`e[38;2;148;226;213m"  # #94E2D5
-    $sky      = "`e[38;2;137;220;235m"  # #89DCEB
-    $sapphire = "`e[38;2;116;199;236m"  # #74C7EC
-    $lavender = "`e[38;2;180;190;254m"  # #B4BEFE
-    $red      = "`e[38;2;243;139;168m"  # #F38BA8
-    $overlay  = "`e[38;2;108;112;134m"  # #6C7086
+    $mauve    = "`e[38;2;203;166;247m"
+    $pink     = "`e[38;2;245;194;231m"
+    $peach    = "`e[38;2;250;179;135m"
+    $yellow   = "`e[38;2;249;226;175m"
+    $green    = "`e[38;2;166;227;161m"
+    $teal     = "`e[38;2;148;226;213m"
+    $sky      = "`e[38;2;137;220;235m"
+    $sapphire = "`e[38;2;116;199;236m"
+    $lavender = "`e[38;2;180;190;254m"
+    $red      = "`e[38;2;243;139;168m"
+    $overlay  = "`e[38;2;108;112;134m"
     $bold     = "`e[1m"
     $reset    = "`e[0m"
 
-    if ($from) {
-        $searchPath = $from
-    } elseif ($u) {
-        $searchPath = $env:USERPROFILE
-    } elseif ($deep) {
-        $searchPath = "C:\"
-    } else {
-        $searchPath = $PWD.Path
-    }
+    if ($from)     { $searchPath = $from }
+    elseif ($u)    { $searchPath = $env:USERPROFILE }
+    elseif ($deep) { $searchPath = "C:\" }
+    else           { $searchPath = $PWD.Path }
 
-    if ($name -match "\.") {
-        $pattern = $name
-    } else {
-        $pattern = "$name.*"
-    }
+    $pattern = if ($name -match "\.") { $name } else { "$name.*" }
 
     Write-Host ""
     Write-Host "  ${mauve}${bold}◆ SHOW${reset}  ${overlay}searching for${reset} ${peach}${bold}$pattern${reset}  ${overlay}in${reset}  ${sky}$searchPath${reset}"
@@ -137,7 +108,6 @@ function show {
         Write-Host ""
         $results | ForEach-Object {
             $file = $_
-
             if ($file.PSIsContainer) {
                 $size = "${teal}[dir]${reset}"
             } elseif ($file.Length -ge 1MB) {
@@ -166,33 +136,28 @@ function show {
     Write-Host ""
 }
 
-# ─────────────────────────────────────────
-#  Prompt — Catppuccin Mocha
-# ─────────────────────────────────────────
 function prompt {
-    $mauve    = "`e[38;2;203;166;247m"  # #CBA6F7
-    $teal     = "`e[38;2;148;226;213m"  # #94E2D5
-    $lavender = "`e[38;2;180;190;254m"  # #B4BEFE
-    $pink     = "`e[38;2;245;194;231m"  # #F5C2E7
+    $mauve    = "`e[38;2;203;166;247m"
+    $teal     = "`e[38;2;148;226;213m"
+    $lavender = "`e[38;2;180;190;254m"
+    $pink     = "`e[38;2;245;194;231m"
     $reset    = "`e[0m"
 
     $mochaPalette = @(
-        "`e[38;2;243;139;168m"  # Red      #F38BA8
-        "`e[38;2;250;179;135m"  # Peach    #FAB387
-        "`e[38;2;249;226;175m"  # Yellow   #F9E2AF
-        "`e[38;2;166;227;161m"  # Green    #A6E3A1
-        "`e[38;2;137;220;235m"  # Sky      #89DCEB
-        "`e[38;2;116;199;236m"  # Sapphire #74C7EC
-        "`e[38;2;137;180;250m"  # Blue     #89B4FA
-        "`e[38;2;203;166;247m"  # Mauve    #CBA6F7
-        "`e[38;2;245;194;231m"  # Pink     #F5C2E7
+        "`e[38;2;243;139;168m"
+        "`e[38;2;250;179;135m"
+        "`e[38;2;249;226;175m"
+        "`e[38;2;166;227;161m"
+        "`e[38;2;137;220;235m"
+        "`e[38;2;116;199;236m"
+        "`e[38;2;137;180;250m"
+        "`e[38;2;203;166;247m"
+        "`e[38;2;245;194;231m"
     )
 
-    # Get current username for color mapping
     $username = $env:USERNAME
-
-    $parts = $PWD.Path -split "\\"
-    $colored = for ($i = 0; $i -lt $parts.Count; $i++) {
+    $parts    = $PWD.Path -split "\\"
+    $colored  = for ($i = 0; $i -lt $parts.Count; $i++) {
         if ($i -eq 0)                    { "$mauve$($parts[$i])" }
         elseif ($parts[$i] -eq "Users")  { "$teal$($parts[$i])" }
         elseif ($parts[$i] -eq $username){ "$lavender$($parts[$i])" }

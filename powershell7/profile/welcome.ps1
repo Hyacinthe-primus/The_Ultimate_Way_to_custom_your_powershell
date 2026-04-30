@@ -1,4 +1,3 @@
-# ─────────────────────────────────────────
 #  Username — master welcome sequence
 #
 #  Usage: Username          (exact casing required)
@@ -8,7 +7,6 @@
 #    "Username" in this file with your own name.
 #    Casing must match exactly — wrong casing
 #    triggers the intruder alert sequence.
-# ─────────────────────────────────────────
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '')]
 param()
@@ -234,16 +232,12 @@ function Username {
         elseif ($target -eq "bruce" -or $target -eq "batman" -or $target -eq "wayne")         { $oracleChoice = 5 }
         else   { $oracleChoice = Get-Random -Minimum 0 -Maximum 6 }
 
-        # ═══════════════════════════════════════════════════════
         # SHARED GLITCH INTRO
-        # ═══════════════════════════════════════════════════════
         $glitchChars = "!?#@%*<>=~".ToCharArray()
 
         if ($oracleChoice -eq 0) {
-            # ═══════════════════════════════════════
-            #  MEWTWO
-            # ═══════════════════════════════════════
-            for ($g = 0; $g -lt 6; $g++) {
+                #  MEWTWO
+                for ($g = 0; $g -lt 6; $g++) {
                 $noise = -join ("ORACLE LOADING".ToCharArray() | ForEach-Object {
                     if ((Get-Random -Minimum 0 -Maximum 3) -eq 0) { $glitchChars | Get-Random } else { $_ }
                 })
@@ -370,10 +364,8 @@ function Username {
             Start-Sleep -Milliseconds 300
 
         } elseif ($oracleChoice -eq 1) {
-            # ═══════════════════════════════════════
-            #  MADARA UCHIHA
-            # ═══════════════════════════════════════
-            $mRed   = "$ESC[38;2;243;139;168m"
+                #  MADARA UCHIHA
+                $mRed   = "$ESC[38;2;243;139;168m"
             $mWhite = "$ESC[38;2;205;214;244m"
             $mGrey  = "$ESC[38;2;108;112;134m"
             $mReset = "$ESC[0m"
@@ -512,10 +504,8 @@ function Username {
             Start-Sleep -Milliseconds 300
 
         } elseif ($oracleChoice -eq 2) {
-            # ═══════════════════════════════════════
-            #  PAIN TENDO
-            # ═══════════════════════════════════════
-            $pOrange = "$ESC[38;2;250;179;135m"
+                #  PAIN TENDO
+                $pOrange = "$ESC[38;2;250;179;135m"
             $pPurple = "$ESC[38;2;203;166;247m"
             $pGrey   = "$ESC[38;2;108;112;134m"
             $pReset  = "$ESC[0m"
@@ -663,10 +653,8 @@ function Username {
             Start-Sleep -Milliseconds 300
 
         } elseif ($oracleChoice -eq 4) {
-            # ═══════════════════════════════════════
-            #  ITACHI UCHIHA  —  Naruto Shippuden
-            # ═══════════════════════════════════════
-
+                #  ITACHI UCHIHA  —  Naruto Shippuden
+    
             # Palette : gris cendré + rouge sharingan + bordeaux profond
             $iGrey    = "$ESC[38;2;147;153;178m"   # Slate — neutralité froide
             $iRed     = "$ESC[38;2;243;139;168m"   # Red Catppuccin — sharingan
@@ -812,10 +800,8 @@ function Username {
             Start-Sleep -Milliseconds 300
 
         } elseif ($oracleChoice -eq 5) {
-            # ═══════════════════════════════════════
-            #  BRUCE WAYNE  —  Batman
-            # ═══════════════════════════════════════
-
+                #  BRUCE WAYNE  —  Batman
+    
             # Palette : or/ambre (Bat-signal) + gris acier + noir profond
             $bGold   = "$ESC[38;2;249;226;175m"   # Yellow Catppuccin — or/ambre
             $bAmber  = "$ESC[38;2;230;180;80m"    # Ambre custom — plus chaud, plus riche
@@ -950,10 +936,8 @@ function Username {
             Start-Sleep -Milliseconds 300
 
         } else {
-            # ═══════════════════════════════════════
-            #  THE WHITE RABBIT  —  Devil May Cry
-            # ═══════════════════════════════════════
-
+                #  THE WHITE RABBIT  —  Devil May Cry
+    
             # Palette: bleu électrique + rouge sang + variantes froides
             $wBlue   = "$ESC[38;2;137;180;250m"   # Blue     #89B4FA
             $wSky    = "$ESC[38;2;116;199;236m"    # Sapphire #74C7EC — bleu plus froid
