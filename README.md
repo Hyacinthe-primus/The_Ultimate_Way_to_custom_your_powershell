@@ -23,8 +23,10 @@ This project is based on the work of [SleepyCatHey](https://github.com/SleepyCat
 - **Colored path segments** -- each folder segment gets its own Mocha color
 - **Welcome message** -- date, time, and a random dev quote on every startup
 - **Fastfetch** integration with random ASCII art support
-- **Custom commands** -- `ll`, `touch`, `which`, `show`
+- **Custom commands** -- `ll`, `touch`, `mkcd`, `whereis`, `show`, `cdh`, `hash`, `hex`, `weather`, `help`
 - **`show` command** -- file search with size, creation date, and modification date
+- **`whereis` command** -- finds commands in PATH and installed apps in the registry
+- **`help` command** -- lists every custom command with a short description
 
 ---
 
@@ -132,7 +134,7 @@ Unblock-File "$env:USERPROFILE/.config/fastfetch/fastfetch-random.ps1"
 ```
 
 
-Then close and reopen PowerShell — your profile should load correctly.
+Then close and reopen PowerShell and your profile should load correctly.
 
 ---
 
@@ -173,34 +175,34 @@ Files needed:
 
 ## Commands
 
-### `ll` — Detailed listing
+### `ll` -- Detailed listing
 Lists all files including hidden ones.
 ```powershell
 ll
 ll C:\some\path
 ```
 
-### `touch` — Create or update a file
+### `touch` -- Create or update a file
 Creates an empty file, or updates its timestamp if it already exists, just like on Linux.
 ```powershell
 touch notes.txt
 touch script.ps1
 ```
 
-### `which` — Find an executable
-Returns the full path of an installed program.
+### `whereis` -- Find commands and installed apps
+Searches PATH and Windows registry for commands and installed applications.
 ```powershell
-which python
-which fastfetch
-which code
+whereis git
+whereis ffmpeg
+whereis "Visual Studio Code"
 ```
 
-### `show` — File search
-Searches for files and displays size, creation date, and last modification date.
+### `show` -- File search
+Searches for files and displays size, creation date, and last modification date. Supports substring matching by default.
 
 ```powershell
 show filename.txt           # current folder only
-show filename               # current folder, all "filename.*"
+show filename               # current folder, all "filename*"
 show -u filename.txt        # user folder (C:\Users\you)
 show -deep filename.txt     # entire C:\ drive
 show -from "C:\path" name   # from a specific folder
@@ -219,12 +221,57 @@ show -from "C:\path" name   # from a specific folder
   ◆  found  1  result(s)
 ```
 
+### `mkcd` -- Create directory and cd into it
+```powershell
+mkcd my-new-folder
+```
+
+### `weather` -- Terminal weather forecast
+Shows current weather and 3-day forecast for a city (default: Kenitra).
+```powershell
+weather
+weather Paris
+weather Tokyo
+```
+
+### `cdh` -- Directory bookmarks
+Save and jump between directories.
+```powershell
+cdh                      # list saved bookmarks
+cdh save                 # bookmark current directory
+cdh save myproject       # bookmark with a custom label
+cdh myproject            # jump to bookmark
+cdh del myproject        # remove bookmark
+```
+
+### `hash` -- Compute file/string hash
+Supports SHA256 (default), MD5, and SHA1. Auto-copies result to clipboard.
+```powershell
+hash file.exe            # SHA256
+hash file.exe -md5       # MD5
+hash -text "hello"       # hash a string
+```
+
+### `hex` -- Hex dump of a file
+Displays the hex and ASCII representation of a file.
+```powershell
+hex file.bin             # first 256 bytes
+hex file.bin 512         # first N bytes
+```
+
+### `help` -- Custom command reference
+Lists all available custom commands with descriptions.
+```powershell
+help                     # show all commands
+help tools               # filter by keyword
+```
+
 ---
 
 ## Customization
 
 ### Username highlight
-Your username folder is automatically highlighted in **Lavender** using `$env:USERNAME` — no hardcoding needed.
+Your username folder is automatically highlighted in **Lavender** using `$env:USERNAME`, no hardcoding needed.
 
 ### Colors
 All colors are defined as ANSI RGB variables. Replace any RGB value with your own:
