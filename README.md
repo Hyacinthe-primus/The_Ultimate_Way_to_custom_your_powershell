@@ -1,6 +1,6 @@
 # PowerShell Catppuccin Mocha Profile
 
-A minimal, beautiful PowerShell profile themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin). Inspired by Linux terminal aesthetics — built for Windows.
+A minimal, beautiful PowerShell profile themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin). Inspired by Linux terminal aesthetics, built for Windows.
 
 ![PowerShell](https://img.shields.io/badge/PowerShell-%235391FE.svg?style=flat&logo=powershell&logoColor=white)
 ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=flat&logo=windows-terminal&logoColor=white)
@@ -11,20 +11,20 @@ A minimal, beautiful PowerShell profile themed with [Catppuccin Mocha](https://g
 
 ## Based on
 
-This project is based on the work of [SleepyCatHey](https://github.com/SleepyCatHey). The original concept and setup were presented in his video — highly recommended if you want to understand the full setup or go further with your Windows terminal customization:
+This project is based on the work of [SleepyCatHey](https://github.com/SleepyCatHey). The original concept and setup were presented in his video, highly recommended if you want to understand the full setup or go further with your Windows terminal customization:
 
-▶️ [Watch the original video](https://www.youtube.com/watch?v=z3NpVq-y6jU&t=16s)
+[Watch the original video](https://www.youtube.com/watch?v=z3NpVq-y6jU&t=16s)
 
 ---
 
 ## Features
 
-- 🎨 **Catppuccin Mocha** colors throughout — prompt, welcome message, search output
-- 🗂️ **Colored path segments** — each folder segment gets its own Mocha color
-- 🕐 **Welcome message** — date, time, and a random dev quote on every startup
-- ⚡ **Fastfetch** integration with random ASCII art support
-- 🛠️ **Custom commands** — `ll`, `touch`, `which`, `show`
-- 🔍 **`show` command** — file search with size, creation date, and modification date
+- **Catppuccin Mocha** colors throughout -- prompt, welcome message, search output
+- **Colored path segments** -- each folder segment gets its own Mocha color
+- **Welcome message** -- date, time, and a random dev quote on every startup
+- **Fastfetch** integration with random ASCII art support
+- **Custom commands** -- `ll`, `touch`, `which`, `show`
+- **`show` command** -- file search with size, creation date, and modification date
 
 ---
 
@@ -43,9 +43,9 @@ This project is based on the work of [SleepyCatHey](https://github.com/SleepyCat
 | File | For |
 |------|-----|
 | `Microsoft_PowerShell_profile.ps1` | PowerShell 7 profile |
-| `fastfetch-random.ps1` | Fastfetch random ASCII script — PowerShell 7 |
+| `fastfetch-random.ps1` | Fastfetch random ASCII script / PowerShell 7 |
 | `Microsoft_PowerShell_profile-ps5.ps1` | Windows PowerShell 5 profile |
-| `fastfetch-random-ps5.ps1` | Fastfetch random ASCII script — Windows PowerShell 5 |
+| `fastfetch-random-ps5.ps1` | Fastfetch random ASCII script / Windows PowerShell 5 |
 | `config.jsonc` | Fastfetch config |
 | `ascii-files/` | ASCII art `.txt` files for fastfetch |
 | `settings.json` | Windows Terminal settings |
@@ -105,7 +105,7 @@ Then close the terminal, navigate to that location, and replace the file's conte
 
 ---
 
-### ⚠️ If you get a script execution error
+### If you get a script execution error
 
 After setting everything up, you may see this error when opening PowerShell:
 
@@ -181,7 +181,7 @@ ll C:\some\path
 ```
 
 ### `touch` — Create or update a file
-Creates an empty file, or updates its timestamp if it already exists — just like on Linux.
+Creates an empty file, or updates its timestamp if it already exists, just like on Linux.
 ```powershell
 touch notes.txt
 touch script.ps1
@@ -266,4 +266,4 @@ Big thanks to [SleepyCatHey](https://github.com/SleepyCatHey) whose project and 
 
 ## License
 
-MIT — do whatever you want with it.
+MIT. Do whatever you want with it.
