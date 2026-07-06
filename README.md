@@ -131,6 +131,8 @@ and
 
 ```powershell
 Unblock-File "$env:USERPROFILE/.config/fastfetch/fastfetch-random.ps1"
+Unblock-File "$env:USERPROFILE/Documents/WindowsPowerShell/profile.ps1"                # Powershell 5
+Unblock-File "$env:USERPROFILE/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"  # Powershell 7
 ```
 
 
