@@ -227,7 +227,7 @@ mkcd my-new-folder
 ```
 
 ### `weather` -- Terminal weather forecast
-Shows current weather and 3-day forecast for a city (default: Kenitra).
+Shows current weather and 3-day forecast for a city (default: Sydney).
 ```powershell
 weather
 weather Paris
