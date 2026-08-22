@@ -1,318 +1,316 @@
-# PowerShell Catppuccin Mocha Profile
+<div align="center">
 
-A minimal, beautiful PowerShell profile themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin). Inspired by Linux terminal aesthetics, built for Windows.
+# The Ultimate Way to Custom Your PowerShell
 
-![PowerShell](https://img.shields.io/badge/PowerShell-%235391FE.svg?style=flat&logo=powershell&logoColor=white)
-![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=flat&logo=windows-terminal&logoColor=white)
-![Theme](https://img.shields.io/badge/Theme-Catppuccin%20Mocha-cba6f7?labelColor=1e1e2e)
-![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows)
+**A beautiful, Linux-inspired PowerShell setup for Windows – themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin), powered by [fastfetch](https://github.com/fastfetch-cli/fastfetch), and finished with random anime ASCII art on every launch.**
+
+[![PowerShell](https://img.shields.io/badge/PowerShell-5_%7C_7-%235391FE.svg?style=flat&logo=powershell&logoColor=white)](https://github.com/PowerShell/PowerShell)
+[![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=flat&logo=windows-terminal&logoColor=white)](https://github.com/microsoft/terminal)
+[![Theme](https://img.shields.io/badge/Theme-Catppuccin_Mocha-cba6f7?style=flat&labelColor=1e1e2e)](https://github.com/catppuccin/catppuccin)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat&logo=windows)](https://windows.com)
+[![License](https://img.shields.io/badge/License-MIT-a6e3a1?style=flat&labelColor=1e1e2e)](LICENSE)
+
+[Preview](#-preview) · [Install](#-installation) · [Commands](#-built-in-commands) · [Customize](#-customization) · [Troubleshoot](#-troubleshooting)
+
+</div>
 
 ---
 
-## Based on
+## ✨ What you get
 
-This project is based on the work of [SleepyCatHey](https://github.com/SleepyCatHey). The original concept and setup were presented in his video, highly recommended if you want to understand the full setup or go further with your Windows terminal customization:
+Open a terminal and land in a workspace that feels alive:
 
-[Watch the original video](https://www.youtube.com/watch?v=z3NpVq-y6jU&t=16s)
-
----
-
-## Features
-
-- **Catppuccin Mocha** colors throughout -- prompt, welcome message, search output
-- **Colored path segments** -- each folder segment gets its own Mocha color
-- **Welcome message** -- date, time, and a random dev quote on every startup
-- **Fastfetch** integration with random ASCII art support
-- **Custom commands** -- `ll`, `touch`, `mkcd`, `whereis`, `show`, `cdh`, `hash`, `hex`, `weather`, `help`
-- **`show` command** -- file search with size, creation date, and modification date
-- **`whereis` command** -- finds commands in PATH and installed apps in the registry
-- **`help` command** -- lists every custom command with a short description
+- **Catppuccin Mocha everywhere** — welcome banner, prompt, command output, terminal scheme
+- **Rainbow prompt** — every path segment gets its own Mocha color; your username is highlighted automatically
+- **Welcome message** — date, time, and a random dev quote at every startup
+- **Random ASCII art** — fastfetch picks a random anime character *and* a random color palette (8 themes: Catppuccin, Dracula, Nord, Tokyo Night, Gruvbox, Everforest, Rosé Pine…) each launch
+- 🛠️ **12 built-in commands** — file search, directory bookmarks, weather, hashing, hex dumps and more (see [command reference](#-built-in-commands))
+- **Zero dependencies beyond fastfetch** — pure PowerShell, no modules to install
 
 ---
 
 ## Preview
 
 ![Preview 1](preview1.png)
-![Preview 2](preview2.png)
-![Preview 5](preview5.png)
-![Preview 3](preview3.png)
 
+<details>
+<summary><b>More screenshots</b></summary>
+
+<br/>
+
+![Preview 2](preview2.png)
+![Preview 3](preview3.png)
+![Preview 4](preview4.png)
+![Preview 5](preview5.png)
+
+</details>
 
 ---
 
-## Files in this repo
+## 🧠 How it works
 
-| File | For |
-|------|-----|
-| `Microsoft_PowerShell_profile.ps1` | PowerShell 7 profile |
-| `fastfetch-random.ps1` | Fastfetch random ASCII script / PowerShell 7 |
-| `Microsoft_PowerShell_profile-ps5.ps1` | Windows PowerShell 5 profile |
-| `fastfetch-random-ps5.ps1` | Fastfetch random ASCII script / Windows PowerShell 5 |
-| `config.jsonc` | Fastfetch config |
-| `ascii-files/` | ASCII art `.txt` files for fastfetch |
-| `settings.json` | Windows Terminal settings |
+```
+Windows Terminal (settings.json — Catppuccin Mocha scheme + Nerd Font)
+        │
+        ▼
+PowerShell profile (welcome message, custom commands, colored prompt)
+        │
+        ▼
+fastfetch-random.ps1
+        ├── picks a random ASCII art .txt from ~/.config/fastfetch/
+        ├── picks a random color palette from 8 built-in themes
+        └── injects both into config.jsonc → runs fastfetch
+```
+
+Everything happens locally at shell startup. No background processes, no telemetry.
+
+---
+
+## Repo contents
+
+| File | Purpose |
+|------|---------|
+| `Microsoft_PowerShell_profile.ps1` | PowerShell **7** profile |
+| `Microsoft_PowerShell_profile-ps5.ps1` | Windows PowerShell **5.1** profile |
+| `fastfetch-random.ps1` | Random ASCII/palette launcher — PowerShell 7 |
+| `fastfetch-random-ps5.ps1` | Same, compatible with PowerShell 5.1 |
+| `config.jsonc` | Fastfetch configuration (modules + logo) |
+| `ascii-files/` | ~25 ASCII art `.txt` files (Itachi, Gojo, Aizen, Sukuna…) |
+| `settings.json` | Ready-to-use Windows Terminal settings |
 
 ---
 
 ## Requirements
 
-| Tool | Purpose |
-|------|---------|
-| [PowerShell 7](https://github.com/PowerShell/PowerShell) or Windows PowerShell | Required |
-| [Windows Terminal](https://github.com/microsoft/terminal) | Recommended |
-| [Nerd Font](https://www.nerdfonts.com/) | Required for icons |
-| [fastfetch](https://github.com/fastfetch-cli/fastfetch) | Required for system info on startup |
+| Tool | Required? | Notes |
+|------|-----------|-------|
+| [PowerShell 7](https://github.com/PowerShell/PowerShell) or Windows PowerShell 5 | ✔ Required | Both profiles are provided |
+| [Nerd Font](https://www.nerdfonts.com/) | ✔ Required | JetBrainsMono Nerd Font recommended |
+| [fastfetch](https://github.com/fastfetch-cli/fastfetch) | ✔ Required | System info panel |
+| [Windows Terminal](https://github.com/microsoft/terminal) | Recommended | Use the included `settings.json` |
 
 ---
 
 ## Installation
 
-### 1. Install JetBrainsMono Nerd Font
+### Step 1 – Install a Nerd Font
 
 ```powershell
 winget install -e --id DEVCOM.JetBrainsMonoNerdFont
 ```
 
-After installing, open Windows Terminal → Settings → open the JSON file → replace its entire content with the `settings.json` included in this repo, then save.
+### Step 2 – Apply the Windows Terminal settings
 
----
+Open **Windows Terminal → Settings → Open JSON file** (bottom-left), replace the entire content with the [`settings.json`](settings.json) from this repo, and save.
 
-### 2. Set up your PowerShell profile
+> This gives you the Catppuccin Mocha color scheme, acrylic transparency, and the correct font out of the box.
 
-Find your profile path:
+### Step 3 – Install your PowerShell profile
+
+Find where your profile lives:
+
 ```powershell
 $PROFILE
 ```
 
-It will return something like:
-```
-C:\Users\username\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
-```
-or for Windows PowerShell:
-```
-C:\Users\username\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+Typical locations:
+
+```text
+PowerShell 7           → C:\Users\<you>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+Windows PowerShell 5   → C:\Users\<you>\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
 ```
 
-If the file doesn't exist yet, create it:
-```powershell
-New-Item -Path $profile.CurrentUserAllHosts -Type File -Force
-```
-
-Then close the terminal, navigate to that location, and replace the file's content with the correct file from this repo:
-
-- **PowerShell 7** → use `Microsoft_PowerShell_profile.ps1`
-- **Windows PowerShell 5** → use `Microsoft_PowerShell_profile-ps5.ps1`, but **rename it** to match your profile filename (`Microsoft_PowerShell_profile.ps1` or `profile.ps1`) before placing it
-
-> **Windows PowerShell 5 only:** Save the profile file as **UTF-8** in VS Code (click the encoding in the bottom right → "Save with Encoding" → "UTF-8"), otherwise special characters and icons won't display correctly.
-
----
-
-### If you get a script execution error
-
-After setting everything up, you may see this error when opening PowerShell:
-
-```
-File C:\Users\username\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 cannot be loaded
-because running scripts is disabled on this system.
-```
-or
-```
-File C:\Users\username\Documents\WindowsPowerShell\profile.ps1 cannot be loaded
-because running scripts is disabled on this system.
-```
-
-This is a Windows security restriction. Fix it by running the following command:
+Create it if it doesn't exist:
 
 ```powershell
-Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+New-Item -Path $PROFILE -Type File -Force
 ```
 
-and
+Then copy the matching file from this repo into that location:
+
+| Your shell | File to copy | Rename? |
+|------------|--------------|---------|
+| PowerShell 7 | `Microsoft_PowerShell_profile.ps1` | No |
+| Windows PowerShell 5 | `Microsoft_PowerShell_profile-ps5.ps1` | **Yes** → `Microsoft.PowerShell_profile.ps1` |
+
+> [!IMPORTANT]
+> **PowerShell 5 users:** open the profile in VS Code and re-save it as **UTF-8 with BOM** (bottom-right encoding selector → *Save with Encoding*), otherwise icons and special characters will break.
+
+### Step 4 – Install fastfetch
 
 ```powershell
-Unblock-File "$env:USERPROFILE/.config/fastfetch/fastfetch-random.ps1"
-Unblock-File "$env:USERPROFILE/Documents/WindowsPowerShell/profile.ps1"                # Powershell 5
-Unblock-File "$env:USERPROFILE/Documents/PowerShell/Microsoft.PowerShell_profile.ps1"  # Powershell 7
-```
-
-
-Then close and reopen PowerShell and your profile should load correctly.
-
----
-
-### 3. Install fastfetch
-
-Choose one of the following:
-
-```powershell
-winget install fastfetch   # recommended
+winget install fastfetch      # recommended
 scoop install fastfetch
 choco install fastfetch
 ```
 
-Or download it directly from the [fastfetch releases page](https://github.com/fastfetch-cli/fastfetch/releases).
+Or grab it from the [releases page](https://github.com/fastfetch-cli/fastfetch/releases).
+
+### Step 5 – Set up the fastfetch config
+
+Copy these files from this repo into `C:\Users\<you>\.config\fastfetch\`:
+
+1. `config.jsonc`
+2. The fastfetch script for your shell:
+   - **PowerShell 7** → `fastfetch-random.ps1` (keep the name)
+   - **PowerShell 5** → `fastfetch-random-ps5.ps1`, **renamed to** `fastfetch-random.ps1`
+3. Every `.txt` file from the [`ascii-files/`](ascii-files/) folder
+
+The `.config\fastfetch` folders don't exist by default — create them manually.
+
+> 💡 Want a single fixed logo instead of random ones? Keep only one `.txt` file in the folder, or point `config.jsonc` directly at it.
+
+### Step 6 – Verify
+
+Restart your terminal. You should see the ASCII art, welcome message, and colored prompt.
+Type `help` to list every custom command.
 
 ---
 
-### 4. Set up fastfetch
+## Built-in commands
 
-Download the following files from this repo and move them to:
-```
-C:\Users\username\.config\fastfetch\
-```
+Run `help` anytime inside the shell, or filter with `help <keyword>`.
 
-Files needed:
-- `config.jsonc`
-- The correct fastfetch script for your PowerShell version:
-  - **PowerShell 7** → `fastfetch-random.ps1` (keep the name as is)
-  - **Windows PowerShell 5** → `fastfetch-random-ps5.ps1`, **rename it** to `fastfetch-random.ps1` before placing it
-- All ASCII art `.txt` files (from the `ascii-files/` folder)
+### Quick reference
 
-> You will need to **create** the `.config` and `fastfetch` folders manually.  
-> Set the `.config` folder attribute to **Hidden** if you want it to stay clean.
+| Command | Category | Description |
+|---------|----------|-------------|
+| `ll` | Nav & Files | Detailed listing, including hidden files |
+| `touch` | Nav & Files | Create an empty file / update timestamp |
+| `mkcd` | Nav & Files | Create a directory and cd into it |
+| `show` | Nav & Files | File search with size & dates |
+| `cdh` | Nav & Files | Directory bookmarks (save / jump / delete) |
+| `hex` | Nav & Files | Hex dump of any file |
+| `cls` | Nav & Files | Clear the terminal |
+| `whereis` | Tools | Locate commands *and* installed apps (registry) |
+| `hash` | Tools | SHA256 / MD5 / SHA1, auto-copied to clipboard |
+| `weather` | Tools | Live weather + 3-day forecast ([Open-Meteo](https://open-meteo.com)) |
+| `help` | Tools | This reference, filterable by keyword |
 
-> If you don't want random ASCII art on startup, either keep only one `.txt` file or edit `fastfetch-random.ps1` to point to a single config.
+### Highlights
 
----
-
-## Commands
-
-### `ll` -- Detailed listing
-Lists all files including hidden ones.
-```powershell
-ll
-ll C:\some\path
-```
-
-### `touch` -- Create or update a file
-Creates an empty file, or updates its timestamp if it already exists, just like on Linux.
-```powershell
-touch notes.txt
-touch script.ps1
-```
-
-### `whereis` -- Find commands and installed apps
-Searches PATH and Windows registry for commands and installed applications.
-```powershell
-whereis git
-whereis ffmpeg
-whereis "Visual Studio Code"
-```
-
-### `show` -- File search
-Searches for files and displays size, creation date, and last modification date. Supports substring matching by default.
+**`show` – search files anywhere**
 
 ```powershell
-show filename.txt           # current folder only
-show filename               # current folder, all "filename*"
-show -u filename.txt        # user folder (C:\Users\you)
-show -deep filename.txt     # entire C:\ drive
-show -from "C:\path" name   # from a specific folder
+show main.py             # current folder (substring match)
+show .ps1                # all .ps1 files in current folder
+show -u report.pdf       # search your entire user folder
+show -deep bigfile.iso   # search the whole C:\ drive
+show -from "D:\Projects" src   # search from a specific folder
 ```
 
-**Example output:**
-```
-  ◆ SHOW  searching for  main.py  in  C:\Users\you\project
-  ────────────────────────────────────────────────────────────
+Each result shows size, creation date, and last modification date.
 
-  ▶ C:\Users\you\project\main.py
-      size     12.4 KB
-      created  2024-11-01 10:22   modified  2025-02-28 14:05
+**`whereis` – find anything**
 
-  ────────────────────────────────────────────────────────────
-  ◆  found  1  result(s)
-```
-
-### `mkcd` -- Create directory and cd into it
 ```powershell
-mkcd my-new-folder
+whereis git                    # resolves commands in PATH
+whereis "Visual Studio Code"   # finds installed apps via the registry
 ```
 
-### `weather` -- Terminal weather forecast
-Shows current weather and 3-day forecast for a city (default: Sydney).
+Searches HKLM + HKCU uninstall keys (32 & 64-bit) and lists discovered `.exe` files.
+
+**`cdh` – bookmark your directories**
+
 ```powershell
-weather
-weather Paris
-weather Tokyo
+cdh                  # list bookmarks
+cdh save             # bookmark current folder
+cdh save myproject   # bookmark with a custom label
+cdh myproject        # jump back later
+cdh del myproject    # remove a bookmark
 ```
 
-### `cdh` -- Directory bookmarks
-Save and jump between directories.
+Bookmarks persist in `~/.config/hyacinthe/bookmarks.json`.
+
+**`weather` – forecast without leaving the terminal**
+
 ```powershell
-cdh                      # list saved bookmarks
-cdh save                 # bookmark current directory
-cdh save myproject       # bookmark with a custom label
-cdh myproject            # jump to bookmark
-cdh del myproject        # remove bookmark
+weather          # default city
+weather Tokyo    # any city worldwide
 ```
 
-### `hash` -- Compute file/string hash
-Supports SHA256 (default), MD5, and SHA1. Auto-copies result to clipboard.
-```powershell
-hash file.exe            # SHA256
-hash file.exe -md5       # MD5
-hash -text "hello"       # hash a string
-```
+Current conditions (temp, feels-like, humidity, wind, visibility) plus a 3-day forecast.
 
-### `hex` -- Hex dump of a file
-Displays the hex and ASCII representation of a file.
-```powershell
-hex file.bin             # first 256 bytes
-hex file.bin 512         # first N bytes
-```
+**`hash` / `hex` – inspect files**
 
-### `help` -- Custom command reference
-Lists all available custom commands with descriptions.
 ```powershell
-help                     # show all commands
-help tools               # filter by keyword
+hash app.exe            # SHA256 (default), copied to clipboard
+hash app.exe -md5       # MD5 instead
+hash -text "hello"      # hash a raw string
+
+hex payload.bin         # first 256 bytes as hex + ASCII
+hex payload.bin 512     # first N bytes
 ```
 
 ---
 
 ## Customization
 
-### Username highlight
-Your username folder is automatically highlighted in **Lavender** using `$env:USERNAME`, no hardcoding needed.
+| What | Where | How |
+|------|-------|-----|
+| Colors | Profile (`$mauve`, `$peach`, …) | Swap any ANSI RGB value: `` "`e[38;2;203;166;247m" `` |
+| Quotes | `$quotes` array in the profile | Add/remove your own dev quotes |
+| Default weather city | `weather` function's `$city` param | Change `"Sydney"` to your city |
+| Prompt icon | `prompt` function | Replace `»` with any glyph from the [Nerd Font cheat sheet](https://www.nerdfonts.com/cheat-sheet) |
+| ASCII art | `~/.config/fastfetch/*.txt` | Drop in your own art — one random file is picked per launch |
+| Color palettes | `$palettes` array in `fastfetch-random.ps1` | Add your own theme (Dracula, Gruvbox… already included) |
+| Transparency / font | `settings.json` | `opacity`, `font.face`, `font.size` |
 
-### Colors
-All colors are defined as ANSI RGB variables. Replace any RGB value with your own:
-```powershell
-$mauve = "`e[38;2;203;166;247m"  # replace 203;166;247 with your RGB values
-```
-
-### Quotes
-Edit the `$quotes` array in the welcome message section to add your own.
-
-### Prompt icon
-The `»` icon requires a Nerd Font. You can swap it for any other Nerd Font glyph from [nerdfonts.com/cheat-sheet](https://www.nerdfonts.com/cheat-sheet).
+Your username segment is highlighted automatically via `$env:USERNAME` — nothing to hardcode.
 
 ---
 
-## Catppuccin Mocha Palette
+## Troubleshooting
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| Mauve | `#CBA6F7` | Prompt icon, drive letter |
-| Teal | `#94E2D5` | `Users` folder |
-| Lavender | `#B4BEFE` | Username folder |
-| Pink | `#F5C2E7` | Prompt symbol, quote icon |
-| Peach | `#FAB387` | Quote text, prompt `$` |
-| Green | `#A6E3A1` | Date, KB-sized files |
-| Yellow | `#F9E2AF` | Date text, MB-sized files |
-| Sky | `#89DCEB` | Search path |
-| Sapphire | `#74C7EC` | Created date |
-| Red | `#F38BA8` | Not found message |
-| Overlay | `#6C7086` | Subtle labels |
+<details>
+<summary><b>"running scripts is disabled on this system"</b></summary>
+
+This is Windows' execution policy. Run once:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+Unblock-File "$env:USERPROFILE\.config\fastfetch\fastfetch-random.ps1"
+Unblock-File "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1"
+Unblock-File "$env:USERPROFILE\Documents\WindowsPowerShell\profile.ps1"
+```
+
+Then reopen the terminal.
+</details>
+
+<details>
+<summary><b>Icons render as boxes / question marks (PowerShell 5)</b></summary>
+
+Re-save the profile as **UTF-8 with BOM**: open it in VS Code → click the encoding indicator (bottom-right) → *Save with Encoding* → *UTF-8 with BOM*.
+</details>
+
+<details>
+<summary><b>Prompt icons look broken even with a Nerd Font installed</b></summary>
+
+Make sure Windows Terminal actually uses it — check `"face": "JetBrainsMono Nerd Font Mono"` under `profiles.defaults.font` in your Terminal settings JSON.
+</details>
+
+<details>
+<summary><b>No system info on startup</b></summary>
+
+Fastfetch may not be on your `PATH`. Test with `fastfetch --version`; if it fails, reinstall via `winget install fastfetch` and reopen the terminal.
+</details>
 
 ---
 
 ## Credits
 
-Big thanks to [SleepyCatHey](https://github.com/SleepyCatHey) whose project and video were the foundation of this setup. Go check out his work!
+This project builds on the work of [SleepyCatHey](https://github.com/SleepyCatHey) — the original concept and setup were presented in [his video](https://www.youtube.com/watch?v=z3NpVq-y6jU). Highly recommended if you want to understand the full stack or push your Windows terminal even further.
+
+Palette by [Catppuccin](https://github.com/catppuccin/catppuccin) · System info by [fastfetch](https://github.com/fastfetch-cli/fastfetch)
+
+---
+
+## Support
+
+If this setup made your terminal nicer, consider leaving a star or [sponsoring the project](https://github.com/sponsors/Hyacinthe-primus).
 
 ---
 
 ## License
 
-MIT. Do whatever you want with it.
+[MIT](LICENSE) – do whatever you want with it.
