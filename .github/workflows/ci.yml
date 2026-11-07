@@ -6,15 +6,20 @@ on:
   pull_request:
 
 jobs:
-  validate:
-    name: Validate (${{ matrix.shell }})
+  validate-pwsh:
+    name: Validate (pwsh)
     runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        shell: [powershell, pwsh]
     steps:
       - uses: actions/checkout@v4
       - name: Run static checks
-        shell: ${{ matrix.shell }}
+        shell: pwsh
+        run: ./.github/scripts/validate.ps1
+
+  validate-windows-powershell:
+    name: Validate (Windows PowerShell 5.1)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run static checks
+        shell: powershell
         run: ./.github/scripts/validate.ps1
