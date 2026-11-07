@@ -1,14 +1,14 @@
 <div align="center">
-
-# The Ultimate Way to Custom Your PowerShell
+<img src="docs/Powershell.png" alt="custom_pwsh" width="110"/>
+<h1>The Ultimate Way to Custom Your PowerShell</h1>
 
 **A Linux-inspired PowerShell setup for Windows, themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin), powered by [fastfetch](https://github.com/fastfetch-cli/fastfetch), with random ASCII art on every launch.**
 
-[![PowerShell](https://img.shields.io/badge/PowerShell-5.1_%7C_7-%235391FE.svg?style=flat&logo=powershell&logoColor=white)](https://github.com/PowerShell/PowerShell)
-[![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=flat&logo=windows-terminal&logoColor=white)](https://github.com/microsoft/terminal)
-[![Theme](https://img.shields.io/badge/Theme-Catppuccin_Mocha-cba6f7?style=flat&labelColor=1e1e2e)](https://github.com/catppuccin/catppuccin)
-[![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=flat&logo=windows)](https://www.microsoft.com/windows)
-[![License](https://img.shields.io/badge/License-MIT-a6e3a1?style=flat&labelColor=1e1e2e)](LICENSE)
+[![PowerShell](https://img.shields.io/badge/PowerShell-5.1_%7C_7-%235391FE.svg?style=for-the-badge)](https://github.com/PowerShell/PowerShell)
+[![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge)](https://github.com/microsoft/terminal)
+[![Theme](https://img.shields.io/badge/Theme-Catppuccin_Mocha-cba6f7?style=for-the-badge)](https://github.com/catppuccin/catppuccin)
+[![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=for-the-badge)](https://www.microsoft.com/windows)
+[![License](https://img.shields.io/badge/License-MIT-a6e3a1?style=for-the-badge)](LICENSE)
 
 [Preview](#preview) | [Install](#installation) | [Commands](#built-in-commands) | [Customize](#customization) | [Troubleshoot](#troubleshooting)
 
