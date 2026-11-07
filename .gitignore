@@ -1,0 +1,10 @@
+# Backups created by install.ps1
+*.bak
+*.bak-*
+
+# OS and editor files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
