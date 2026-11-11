@@ -1,6 +1,6 @@
 <div align="center">
-<img src="docs/Powershell.png" alt="custom_pwsh" width="110"/>
-<h1>The Ultimate Way to Custom Your PowerShell</h1>
+<img src="docs/Shell.png" alt="custom_pwsh" width="110"/>
+<h1>ChromaShell</h1>
 
 **A Linux-inspired PowerShell setup for Windows, themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin), powered by [fastfetch](https://github.com/fastfetch-cli/fastfetch), with a Kali-style prompt and random ASCII art on every launch.**
 
