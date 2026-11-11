@@ -6,8 +6,7 @@
 .DESCRIPTION
     Picks a random .txt file from the "ascii" folder next to this script and one of the
     built-in palettes, then passes both to fastfetch as command line options. The base
-    config.jsonc is never modified and no temporary file is created, so several terminals
-    can start at the same time without interfering with each other.
+    config.jsonc is never modified, so several terminals can start at the same time.
 
     Works in Windows PowerShell 5.1 and PowerShell 7+.
 
@@ -67,7 +66,6 @@ function ConvertTo-FastfetchColor {
     "38;2;$r;$g;$b"
 }
 
-# Base arguments: use the shared config when it exists.
 $fastfetchArgs = @()
 if (Test-Path -LiteralPath $baseConfig) {
     $fastfetchArgs += @('--config', $baseConfig)
@@ -76,7 +74,6 @@ else {
     Write-Warning "Config not found: $baseConfig (using fastfetch defaults)"
 }
 
-# Pick the ASCII art.
 $artFiles = @()
 if (Test-Path -LiteralPath $asciiDir) {
     $artFiles = @(Get-ChildItem -LiteralPath $asciiDir -Filter '*.txt' -File)
@@ -97,7 +94,6 @@ if ($artFiles.Count -eq 0) {
 else {
     $selectedArt = $artFiles | Get-Random
 
-    # Pick the palette.
     $selectedPalette = $null
     if ($Palette) {
         $selectedPalette = $palettes | Where-Object { $_.Name -like "*$Palette*" } | Select-Object -First 1

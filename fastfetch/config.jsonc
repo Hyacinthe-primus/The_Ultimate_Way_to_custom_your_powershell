@@ -1,10 +1,6 @@
 {
-  // Base fastfetch configuration.
-  // fastfetch-random.ps1 overrides the logo file and the logo colors at launch,
-  // so the logo section below only matters when you run `fastfetch` directly.
-  // Colors use the "38;2;R;G;B" format, which every fastfetch version accepts.
-  // The palette below is Catppuccin Mocha (rosewater, flamingo, pink, peach, yellow,
-  // green, teal, sky, sapphire).
+  // fastfetch-random.ps1 overrides the logo and its colors at launch.
+  // Palette: Catppuccin Mocha, in "38;2;R;G;B" form.
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "color": {

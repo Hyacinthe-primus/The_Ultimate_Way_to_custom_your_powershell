@@ -4,8 +4,9 @@
     Installs the Catppuccin Mocha PowerShell setup for the current user.
 
 .DESCRIPTION
-    Copies the PowerShell profile to $PROFILE (for the shell running this script) and the
-    fastfetch files (config, launcher script, ASCII art) to ~/.config/fastfetch.
+    Copies the PowerShell profile to $PROFILE (for the shell running this script), the
+    PoshKit modules next to it in the Modules folder, and the fastfetch files
+    (config, launcher script, ASCII art) to ~/.config/fastfetch.
     Existing files that differ from the new ones are backed up first
     (<name>.bak-<yyyyMMdd-HHmmss>). Nothing is deleted.
 
@@ -35,13 +36,10 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot     = $PSScriptRoot
 $profileDest  = $PROFILE.CurrentUserCurrentHost
+$moduleRoot   = Join-Path (Split-Path -Parent $profileDest) 'Modules'
 $fastfetchDir = Join-Path $HOME '.config/fastfetch'
 
 function Install-File {
-    <#
-    .SYNOPSIS
-        Copies one file, backing up the destination first when its content differs.
-    #>
     param(
         [Parameter(Mandatory)][string]$Source,
         [Parameter(Mandatory)][string]$Destination
@@ -80,7 +78,6 @@ function Install-File {
             Unblock-File -LiteralPath $Destination -ErrorAction Stop
         }
         catch {
-            # Not supported on this platform, or the file is not blocked. Nothing to do.
             Write-Verbose "Unblock-File skipped for ${Destination}: $($_.Exception.Message)"
         }
         Write-Host "  installed  $Destination"
@@ -95,7 +92,15 @@ Write-Host ''
 Write-Host 'PowerShell profile'
 Install-File -Source (Join-Path $repoRoot 'profile/Microsoft.PowerShell_profile.ps1') -Destination $profileDest
 
-# 2. fastfetch config, launcher and ASCII art
+# 2. PowerShell modules. The loader imports them from .\Modules next to the profile.
+Write-Host ''
+Write-Host 'PowerShell modules'
+foreach ($moduleDir in Get-ChildItem -LiteralPath (Join-Path $repoRoot 'profile/Modules') -Directory) {
+    $moduleFile = Join-Path $moduleDir.FullName "$($moduleDir.Name).psm1"
+    Install-File -Source $moduleFile -Destination (Join-Path $moduleRoot "$($moduleDir.Name)/$($moduleDir.Name).psm1")
+}
+
+# 3. fastfetch config, launcher and ASCII art
 Write-Host ''
 Write-Host 'fastfetch files'
 Install-File -Source (Join-Path $repoRoot 'fastfetch/config.jsonc')            -Destination (Join-Path $fastfetchDir 'config.jsonc')
@@ -104,7 +109,7 @@ foreach ($art in Get-ChildItem -LiteralPath (Join-Path $repoRoot 'fastfetch/asci
     Install-File -Source $art.FullName -Destination (Join-Path $fastfetchDir "ascii/$($art.Name)")
 }
 
-# 3. Windows Terminal settings (opt-in)
+# 4. Windows Terminal settings (opt-in)
 if ($IncludeTerminalSettings) {
     Write-Host ''
     Write-Host 'Windows Terminal settings'
@@ -124,7 +129,7 @@ if ($IncludeTerminalSettings) {
     }
 }
 
-# 4. Dependency hints (informational only)
+# 5. Dependency hints (informational only)
 Write-Host ''
 if (-not (Get-Command fastfetch -ErrorAction SilentlyContinue)) {
     Write-Warning 'fastfetch is not installed or not in PATH. Install it with: winget install fastfetch'

@@ -2,7 +2,7 @@
 <img src="docs/Powershell.png" alt="custom_pwsh" width="110"/>
 <h1>The Ultimate Way to Custom Your PowerShell</h1>
 
-**A Linux-inspired PowerShell setup for Windows, themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin), powered by [fastfetch](https://github.com/fastfetch-cli/fastfetch), with random ASCII art on every launch.**
+**A Linux-inspired PowerShell setup for Windows, themed with [Catppuccin Mocha](https://github.com/catppuccin/catppuccin), powered by [fastfetch](https://github.com/fastfetch-cli/fastfetch), with a Kali-style prompt and random ASCII art on every launch.**
 
 [![PowerShell](https://img.shields.io/badge/PowerShell-5.1_%7C_7-%235391FE.svg?style=for-the-badge)](https://github.com/PowerShell/PowerShell)
 [![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge)](https://github.com/microsoft/terminal)
@@ -19,12 +19,13 @@
 ## Features
 
 - **Catppuccin Mocha everywhere**: welcome banner, prompt, command output and terminal color scheme.
-- **Rainbow prompt**: each path segment gets its own Mocha color, and your user name is highlighted automatically.
-- **Welcome message**: date, time and a random developer quote at every interactive startup.
+- **Kali-style two-line prompt**: user, hostname, a rainbow path, the current Git branch (yellow when the tree is dirty), an admin marker (`#` in red) and a virtualenv tag.
+- **Welcome message**: date, time and a random quote at every interactive startup.
 - **Random ASCII art**: fastfetch shows a random character and a random color palette on each launch (8 palettes: Catppuccin Mocha, Catppuccin Latte, Dracula, Nord, Tokyo Night, Gruvbox, Everforest, Rose Pine).
-- **10 built-in commands**: file search, directory bookmarks, weather, hashing, hex dumps and more (see the [command reference](#built-in-commands)).
-- **One profile for both shells**: the same file works in Windows PowerShell 5.1 and PowerShell 7. It is pure ASCII, so no encoding tweaks are needed.
-- **No PowerShell modules required**: only fastfetch and a Nerd Font.
+- **16 built-in commands**: file search, a local web server, process and environment inspection, Base64, clipboard helpers, weather, hashing, hex dumps and more (see the [command reference](#built-in-commands)).
+- **Modular by design**: a small profile loader imports one module per concern, so each command lives in a file that is easy to find and edit.
+- **One setup for both shells**: the same files work in Windows PowerShell 5.1 and PowerShell 7. Every script is pure ASCII, so no encoding tweaks are needed.
+- **No external PowerShell modules required**: the commands ship with the project; only fastfetch and a Nerd Font are needed.
 
 ---
 
@@ -52,7 +53,13 @@
 Windows Terminal (settings.json: Catppuccin Mocha scheme + Nerd Font)
         |
         v
-PowerShell profile (welcome message, custom commands, colored prompt)
+PowerShell profile loader (console setup, startup sequence, reload)
+        |
+        +-- Modules/PoshKit.Welcome   date, time, random quote
+        +-- Modules/PoshKit.Shell     prompt, bookmarks, env, clip, paste, help
+        +-- Modules/PoshKit.Files     ll, touch, show, hex
+        +-- Modules/PoshKit.System    proc, serve, weather
+        +-- Modules/PoshKit.Tools     whereis, hash, b64
         |
         v
 fastfetch-random.ps1
@@ -61,7 +68,7 @@ fastfetch-random.ps1
         '-- runs fastfetch with the base config.jsonc and both choices
 ```
 
-Everything runs locally at shell startup. There are no background processes and no telemetry. The only network call is made by `weather`, when you run it.
+Everything runs locally at shell startup. There are no background processes and no telemetry. `weather` and `ip`-style lookups (if you add them) make network calls only when you run them; `serve` listens only while you keep it running.
 
 The banner and fastfetch only run in an interactive console. They are skipped when the output is redirected (for example `pwsh -Command ...` called from a script), so they never pollute captured output.
 
@@ -71,7 +78,12 @@ The banner and fastfetch only run in an interactive console. They are skipped wh
 
 | Path | Purpose |
 |------|---------|
-| `profile/Microsoft.PowerShell_profile.ps1` | PowerShell profile (Windows PowerShell 5.1 and PowerShell 7) |
+| `profile/Microsoft.PowerShell_profile.ps1` | Profile loader (works in Windows PowerShell 5.1 and PowerShell 7) |
+| `profile/Modules/PoshKit.Welcome/` | Startup banner and quote list |
+| `profile/Modules/PoshKit.Shell/` | Prompt, navigation, bookmarks, environment, clipboard, help |
+| `profile/Modules/PoshKit.Files/` | File listing, search, creation and hex dump |
+| `profile/Modules/PoshKit.System/` | Processes, HTTP file server and weather |
+| `profile/Modules/PoshKit.Tools/` | Command lookup, hashing and Base64 |
 | `fastfetch/config.jsonc` | Base fastfetch configuration (modules, padding, colors) |
 | `fastfetch/fastfetch-random.ps1` | Launcher that picks a random logo and palette |
 | `fastfetch/ascii/` | 24 ASCII art `.txt` files |
@@ -85,10 +97,11 @@ The banner and fastfetch only run in an interactive console. They are skipped wh
 
 | Tool | Required | Notes |
 |------|----------|-------|
-| [PowerShell 7](https://github.com/PowerShell/PowerShell) or Windows PowerShell 5.1 | Yes | One profile covers both |
+| [PowerShell 7](https://github.com/PowerShell/PowerShell) or Windows PowerShell 5.1 | Yes | One setup covers both |
 | [Nerd Font](https://www.nerdfonts.com/) | Yes | JetBrainsMono Nerd Font recommended |
 | [fastfetch](https://github.com/fastfetch-cli/fastfetch) | Yes | System info panel |
 | [Windows Terminal](https://github.com/microsoft/terminal) | Recommended | Use the included `settings.json` |
+| [Git](https://git-scm.com/) | Optional | The prompt shows the branch when you are inside a repository |
 
 ---
 
@@ -109,7 +122,7 @@ Clone it, or download it with **Code > Download ZIP** and extract it.
 
 ### 3. Run the installer
 
-From the repository folder, run it in **each shell you use** (Windows PowerShell and PowerShell 7 each have their own profile):
+From the repository folder, run it in **each shell you use** (Windows PowerShell and PowerShell 7 each have their own profile and module folder):
 
 ```powershell
 # Windows PowerShell 5.1
@@ -121,7 +134,8 @@ pwsh -ExecutionPolicy Bypass -File .\install.ps1
 
 The installer:
 
-- copies the profile to the path stored in `$PROFILE` (this respects OneDrive-redirected Documents folders),
+- copies the profile loader to the path stored in `$PROFILE` (this respects OneDrive-redirected Documents folders),
+- copies the `PoshKit.*` modules into the `Modules` folder that sits next to the profile (`$PROFILE`'s parent folder), which is exactly where the loader looks for them,
 - copies the fastfetch config, launcher and ASCII art to `~/.config/fastfetch/`,
 - backs up any existing file that differs as `<name>.bak-<timestamp>` and never deletes anything,
 - unblocks the copied files so `RemoteSigned` accepts them.
@@ -147,19 +161,24 @@ Or do it manually: open **Windows Terminal > Settings > Open JSON file**, replac
 
 ### 5. Restart your terminal
 
-You should see the ASCII art, the welcome message and the colored prompt. Type `help` to list every custom command.
+You should see the ASCII art, the welcome message and the two-line prompt. Type `help` to list every custom command.
 
 ### Manual installation
 
 If you prefer not to use the installer:
 
 1. Run `$PROFILE` to see where your profile must live, create it with `New-Item -Path $PROFILE -Type File -Force`, and copy `profile/Microsoft.PowerShell_profile.ps1` over it.
-2. Create `~/.config/fastfetch/` (that is, `C:\Users\<you>\.config\fastfetch\`) and copy `fastfetch/config.jsonc` and `fastfetch/fastfetch-random.ps1` into it.
-3. Copy the `fastfetch/ascii/` folder into `~/.config/fastfetch/ascii/`.
+2. Copy the whole `profile/Modules/` folder next to the profile, so that `PoshKit.Shell` lives at `(Split-Path $PROFILE)\Modules\PoshKit.Shell\PoshKit.Shell.psm1`. Repeat for every module.
+3. Create `~/.config/fastfetch/` (that is, `C:\Users\<you>\.config\fastfetch\`) and copy `fastfetch/config.jsonc` and `fastfetch/fastfetch-random.ps1` into it.
+4. Copy the `fastfetch/ascii/` folder into `~/.config/fastfetch/ascii/`.
 
 ### Upgrading from an earlier version
 
-Earlier versions shipped a separate PowerShell 5 profile and kept the `.txt` art files directly in `~/.config/fastfetch/`. Run the installer again, then delete the leftovers: `fastfetch-random-ps5.ps1` and the loose `.txt` files in `~/.config/fastfetch/`. The profile and launcher now read the art from the `ascii/` subfolder only.
+Earlier versions shipped one large profile and kept the `.txt` art files directly in `~/.config/fastfetch/`. Run the installer again: it replaces the profile with the loader, adds the `Modules` folder and moves the art into `ascii/`. Then delete the leftovers: `fastfetch-random-ps5.ps1` and the loose `.txt` files in `~/.config/fastfetch/`.
+
+If you already have custom modules with the same `PoshKit.*` names, the installer backs them up as `.bak-<timestamp>` before replacing them.
+
+Bookmarks now live in `~/.config/<username>/bookmarks.json`. If you used an earlier version, move your existing `bookmarks.json` into that folder once.
 
 ---
 
@@ -175,8 +194,14 @@ Run `help` anytime, or filter with `help <keyword>`. If the keyword matches no c
 | `show` | Nav & Files | File search with size and dates |
 | `cdh` | Nav & Files | Directory bookmarks (save, jump, delete) |
 | `hex` | Nav & Files | Hex dump of any file |
+| `serve` | Nav & Files | Quick HTTP file server for the current folder |
+| `proc` | System | Top processes by CPU or memory |
+| `env` | System | List or search environment variables |
 | `whereis` | Tools | Locate commands and installed apps (registry) |
 | `hash` | Tools | SHA256, MD5 or SHA1, copied to the clipboard |
+| `b64` | Tools | Base64 encode or decode strings and files |
+| `clip` | Tools | Pipe output to the clipboard |
+| `paste` | Tools | Paste clipboard text into a file |
 | `weather` | Tools | Current weather and 3-day forecast ([Open-Meteo](https://open-meteo.com)) |
 | `help` | Tools | This reference, filterable by keyword |
 
@@ -192,6 +217,61 @@ show -from "D:\Projects" src    # search from a specific folder
 ```
 
 A name that contains a dot is matched exactly (wildcards `*` and `?` are allowed). A name without a dot is matched as a substring. Each result shows its size, creation date and last modification date.
+
+### `serve`: local HTTP server
+
+```powershell
+serve             # serve the current folder on http://localhost:8080/
+serve 3000        # use another port
+```
+
+Directory listings and common file types (HTML, CSS, JS, JSON, images, PDF, video, fonts, text) are served with the right content type. Path traversal outside the served folder is blocked, and request errors are logged without stopping the server. Press `Ctrl+C` to stop it.
+
+### `proc`: process monitor
+
+```powershell
+proc              # top 10 by CPU
+proc 20           # top 20 by CPU
+proc -ram         # top 10 by memory
+proc 15 -ram      # top 15 by memory
+```
+
+CPU usage is sampled over 700 ms. On Windows PowerShell 5.1 the command falls back to the WMI performance counters, because that edition does not expose `Process.CPU`.
+
+### `env`: environment variables
+
+```powershell
+env               # every variable, sorted by name
+env PATH          # only names containing "PATH"
+env JAVA          # only names containing "JAVA"
+```
+
+Long values are truncated to keep the table readable.
+
+### `b64`: Base64 encode and decode
+
+```powershell
+b64 "hello world"                 # encode a string
+b64 -d "aGVsbG8gd29ybGQ="         # decode a string
+b64 .\payload.bin                 # encode a file (path detected automatically)
+b64 -d .\payload.b64              # decode a file
+b64 .\payload.bin -Out x.b64      # write the result to a file
+b64 -d .\payload.b64 -Out x.bin   # decode binary data to a file
+b64 -String "some-file-name"      # force string mode when a file with that name exists
+```
+
+Results are copied to the clipboard. Very long values are truncated on screen; use `-Out` to save the full result.
+
+### `clip` and `paste`: bridge the clipboard
+
+```powershell
+Get-Content log.txt | clip        # copy text to the clipboard
+Get-Process | clip                # copy any pipeline output
+
+paste                             # print the clipboard
+paste notes.txt                   # append the clipboard to a file
+paste notes.txt -Overwrite        # replace the file content
+```
 
 ### `whereis`: find commands and apps
 
@@ -212,7 +292,7 @@ cdh myproject        # jump to it later
 cdh del myproject    # remove a bookmark
 ```
 
-Bookmarks are stored in `~/.config/hyacinthe/bookmarks.json`. The labels `save` and `del` are reserved.
+Bookmarks are stored in `~/.config/<username>/bookmarks.json`, where `<username>` is your Windows user name. The labels `save` and `del` are reserved.
 
 ### `weather`: forecast in the terminal
 
@@ -242,10 +322,11 @@ hex payload.bin 512     # first 512 bytes
 
 | What | Where | How |
 |------|-------|-----|
-| Default weather city, bookmark file, fastfetch folder | `$script:Settings` at the top of the profile | Edit the values |
-| Colors | `$mochaHex` in the profile | Change any 6-digit hex value |
-| Quotes | `$script:Quotes` in the profile | Add or remove quotes |
-| Prompt icon and chevron | `PromptIcon` and `Chevron` in `$script:Glyph` | Use any code point from the [Nerd Font cheat sheet](https://www.nerdfonts.com/cheat-sheet) |
+| Prompt layout, colors, Git branch, admin marker | `profile/Modules/PoshKit.Shell/PoshKit.Shell.psm1` | Edit `prompt` and `$script:Theme` |
+| Prompt path colors | `$palette` inside `prompt` | Add or reorder the 9 Catppuccin colors |
+| Welcome quotes | `profile/Modules/PoshKit.Welcome/PoshKit.Welcome.psm1` | Add or remove entries in `$script:Quotes` |
+| Default weather city | `profile/Modules/PoshKit.System/PoshKit.System.psm1` | Edit `$script:Settings.WeatherCity` |
+| Bookmark file | `profile/Modules/PoshKit.Shell/PoshKit.Shell.psm1` | Edit `$script:Settings.BookmarkFile` |
 | ASCII art | `~/.config/fastfetch/ascii/*.txt` | Drop in your own `.txt` files; one is picked at random per launch |
 | Color palettes | `$palettes` in `fastfetch-random.ps1` | Add a palette with 9 hex colors |
 | Fixed logo or palette | The `& $fastfetchScript` call in the profile | Append `-Art itachi -Palette nord` |
@@ -280,15 +361,27 @@ Run `$PROFILE` in the shell you use and check that the file exists at exactly th
 </details>
 
 <details>
+<summary><b>"Profile: module failed to load: ..."</b></summary>
+
+The loader could not find or import one of the `PoshKit.*` modules. Check that a `Modules` folder sits next to your profile and contains `PoshKit.Shell\PoshKit.Shell.psm1`, `PoshKit.Files\PoshKit.Files.psm1`, `PoshKit.System\PoshKit.System.psm1`, `PoshKit.Tools\PoshKit.Tools.psm1` and `PoshKit.Welcome\PoshKit.Welcome.psm1`. Re-run the installer if a folder is missing, then type `reload`.
+</details>
+
+<details>
 <summary><b>Icons render as boxes or question marks</b></summary>
 
-Make sure Windows Terminal uses a Nerd Font: check `"face": "JetBrainsMono Nerd Font Mono"` under `profiles.defaults.font` in the Terminal settings JSON.
+Make sure Windows Terminal uses a Nerd Font: check `"face": "JetBrainsMono Nerd Font Mono"` under `profiles.defaults.font` in the Terminal settings JSON. The prompt also uses `㉿` and box-drawing characters; UTF-8 output is configured by the profile.
 </details>
 
 <details>
 <summary><b>No system info on startup</b></summary>
 
 fastfetch may not be in your `PATH`. Test with `fastfetch --version`. If it fails, reinstall it with `winget install fastfetch` and reopen the terminal.
+</details>
+
+<details>
+<summary><b>`serve` says the server could not start</b></summary>
+
+The port is already in use or blocked. Try another port (`serve 3000`). If the message mentions access rights, use a port above 1024 and run the shell as your normal user.
 </details>
 
 <details>
@@ -302,18 +395,26 @@ Start it with `pwsh -NoProfile` (or `powershell -NoProfile`).
 ## Uninstall
 
 1. Delete the profile file shown by `$PROFILE` (or restore the `.bak-<timestamp>` backup next to it).
-2. Delete `~/.config/fastfetch/` if you do not use fastfetch for anything else.
-3. Delete `~/.config/username/` to remove your bookmarks.
+2. Delete the `PoshKit.*` folders under `(Split-Path $PROFILE)\Modules\` if you installed them from this repository.
+3. Delete `~/.config/fastfetch/` if you do not use fastfetch for anything else.
+4. Delete `~/.config/<username>/` to remove your bookmarks.
 
 ---
 
 ## Development
 
-CI runs `.github/scripts/validate.ps1` on Windows PowerShell 5.1 and PowerShell 7. It checks that every script parses, that scripts contain only ASCII characters, that the JSON files are valid and that ASCII art files use lowercase kebab-case names. You can run the same script locally:
+CI runs `.github/scripts/validate.ps1` on Windows PowerShell 5.1 and PowerShell 7. It checks that every `.ps1` and `.psm1` file parses, that scripts contain only ASCII characters, that the JSON files are valid and that ASCII art files use lowercase kebab-case names. You can run the same script locally:
 
 ```powershell
 ./.github/scripts/validate.ps1
 ```
+
+Module conventions:
+
+- one folder per module, with a `<ModuleName>.psm1` inside,
+- export commands explicitly with `Export-ModuleMember` at the bottom,
+- keep the files ASCII-only; build glyphs from code points such as `[string][char]0x25C6`,
+- the profile loader imports modules from `$PSScriptRoot\Modules` with `-Force`, so `reload` picks up edits.
 
 ---
 
