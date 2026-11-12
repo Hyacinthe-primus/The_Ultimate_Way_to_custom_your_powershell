@@ -10,7 +10,7 @@ jobs:
     name: Validate (pwsh)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run static checks
         shell: pwsh
         run: ./.github/scripts/validate.ps1
@@ -19,7 +19,7 @@ jobs:
     name: Validate (Windows PowerShell 5.1)
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Run static checks
         shell: powershell
         run: ./.github/scripts/validate.ps1
