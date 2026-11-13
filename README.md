@@ -330,6 +330,7 @@ hex payload.bin 512     # first 512 bytes
 | ASCII art | `~/.config/fastfetch/ascii/*.txt` | Drop in your own `.txt` files; one is picked at random per launch |
 | Color palettes | `$palettes` in `fastfetch-random.ps1` | Add a palette with 9 hex colors |
 | Fixed logo or palette | The `& $fastfetchScript` call in the profile | Append `-Art itachi -Palette nord` |
+| Boxed title | `New-BoxedTitleConfig` in `fastfetch-random.ps1` | The launcher swaps the `title` module for a rounded box at launch, using the title colors from `config.jsonc`; if that fails, the plain title is shown |
 | `fastfetch` command | `function fastfetch` in the profile | Runs your launcher with no arguments (or `-Art` / `-Palette`); any other option goes to the real `fastfetch.exe` |
 | Transparency and font | `settings.json` | Edit `opacity`, `font.face`, `font.size` |
 

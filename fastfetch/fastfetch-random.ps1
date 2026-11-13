@@ -69,9 +69,71 @@ function ConvertTo-FastfetchColor {
     "38;2;$r;$g;$b"
 }
 
+# The width of the box depends on the user and host names, so it cannot live in config.jsonc.
+# This writes a copy of the config where the title module is replaced by a rounded box, and
+# returns its path. Any failure returns $null and the caller falls back to the plain title.
+# Box characters are built from code points so the script stays safe in Windows PowerShell 5.1,
+# which reads a BOM-less file as ANSI.
+function New-BoxedTitleConfig {
+    param([Parameter(Mandatory)][string]$Path)
+
+    try {
+        $text   = (Get-Content -LiteralPath $Path -Raw -Encoding UTF8) -replace '(?m)^\s*//.*$', ''
+        $config = $text | ConvertFrom-Json
+
+        $title = $config.modules | Where-Object { $_ -isnot [string] -and $_.type -eq 'title' } |
+            Select-Object -First 1
+        if (-not $title) { return $null }
+
+        $userColor = '38;2;245;194;231'
+        $atColor   = '38;2;205;214;244'
+        $hostColor = '38;2;137;220;235'
+        if ($title.color) {
+            if ($title.color.user) { $userColor = $title.color.user }
+            if ($title.color.at)   { $atColor   = $title.color.at }
+            if ($title.color.host) { $hostColor = $title.color.host }
+        }
+
+        $esc      = [char]27
+        $reset    = "$esc[0m"
+        $border   = "$esc[${userColor}m"
+        $userName = [Environment]::UserName
+        $hostName = [System.Net.Dns]::GetHostName()
+
+        $h = [string][char]0x2500
+        $v = [char]0x2502
+        $pad = '  '
+        $bar = $h * ($userName.Length + 1 + $hostName.Length + (2 * $pad.Length))
+
+        $top = "$border$([char]0x256D)$bar$([char]0x256E)$reset"
+        $mid = "$border$v$reset$pad$esc[${userColor}m$userName$esc[${atColor}m@$esc[${hostColor}m$hostName$reset$pad$border$v$reset"
+        $bot = "$border$([char]0x2570)$bar$([char]0x256F)$reset"
+
+        $modules = foreach ($module in $config.modules) {
+            if ($module -is [string] -or $module.type -ne 'title') {
+                $module
+                continue
+            }
+            foreach ($line in $top, $mid, $bot) {
+                [pscustomobject]@{ type = 'custom'; format = $line }
+            }
+        }
+        $config.modules = @($modules)
+
+        $tempPath = Join-Path ([IO.Path]::GetTempPath()) ("fastfetch-$([guid]::NewGuid().ToString('N')).jsonc")
+        [IO.File]::WriteAllText($tempPath, ($config | ConvertTo-Json -Depth 10), [Text.UTF8Encoding]::new($false))
+        $tempPath
+    }
+    catch {
+        $null
+    }
+}
+
 $fastfetchArgs = @()
+$tempConfig = $null
 if (Test-Path -LiteralPath $baseConfig) {
-    $fastfetchArgs += @('--config', $baseConfig)
+    $tempConfig = New-BoxedTitleConfig -Path $baseConfig
+    $fastfetchArgs += @('--config', $(if ($tempConfig) { $tempConfig } else { $baseConfig }))
 }
 else {
     Write-Warning "Config not found: $baseConfig (using fastfetch defaults)"
@@ -114,4 +176,9 @@ else {
     }
 }
 
-& $fastfetchExe.Source @fastfetchArgs
+try {
+    & $fastfetchExe.Source @fastfetchArgs
+}
+finally {
+    if ($tempConfig) { Remove-Item -LiteralPath $tempConfig -Force -ErrorAction SilentlyContinue }
+}

@@ -35,29 +35,44 @@
     "break",
     {
       "type": "os",
-      "key": "",
+      "key": " OS     │",
       "keyColor": "38;2;137;220;235"
     },
     {
       "type": "cpu",
-      "key": "",
+      "key": " CPU    │",
       "keyColor": "38;2;245;194;231"
     },
     {
+      "type": "gpu",
+      "key": "󰢮 GPU    │",
+      "keyColor": "38;2;203;166;247"
+    },
+    {
       "type": "board",
-      "key": "󰚗",
+      "key": "󰚗 Board  │",
       "keyColor": "38;2;250;179;135"
     },
     {
       "type": "memory",
-      "key": "",
+      "key": " Memory │",
       "keyColor": "38;2;166;227;161",
       "format": "{used} / {total} ({percentage})"
     },
     {
       "type": "disk",
-      "key": "",
+      "key": " Disk   │",
       "keyColor": "38;2;148;226;213"
+    },
+    {
+      "type": "shell",
+      "key": "󰨊 Shell  │",
+      "keyColor": "38;2;249;226;175"
+    },
+    {
+      "type": "uptime",
+      "key": "󰔛 Uptime │",
+      "keyColor": "38;2;242;205;205"
     },
     "break",
     {
