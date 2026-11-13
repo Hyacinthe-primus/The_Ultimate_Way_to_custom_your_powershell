@@ -52,7 +52,7 @@ if ($isInteractiveConsole) {
     Clear-Host
 
     $fastfetchScript = Join-Path $HOME '.config/fastfetch/fastfetch-random.ps1'
-    if ((Get-Command fastfetch -ErrorAction SilentlyContinue) -and
+    if ((Get-Command fastfetch -CommandType Application -ErrorAction SilentlyContinue) -and
         (Test-Path -LiteralPath $fastfetchScript)) {
         & $fastfetchScript
     }
@@ -68,6 +68,21 @@ Remove-Variable moduleCandidates, moduleRoot, loadErrors, loadModule, name, err,
     isInteractiveConsole, fastfetchScript -ErrorAction SilentlyContinue
 
 Set-Alias -Name vim -Value nvim
+
+# Typing fastfetch runs the custom launcher. Real fastfetch options (--version, -s cpu...)
+# still go straight to the executable; -Art and -Palette go to the launcher.
+function fastfetch {
+    $launcher = Join-Path $HOME '.config/fastfetch/fastfetch-random.ps1'
+    $exe = Get-Command fastfetch -CommandType Application -ErrorAction SilentlyContinue |
+        Select-Object -First 1
+
+    $useLauncher = (Test-Path -LiteralPath $launcher) -and
+        ($args.Count -eq 0 -or $args[0] -in '-Art', '-Palette')
+
+    if ($useLauncher) { & $launcher @args }
+    elseif ($exe)     { & $exe.Source @args }
+    else              { Write-Warning 'fastfetch was not found in PATH. Install it with: winget install fastfetch' }
+}
 
 # Re-run the profile; -Force module imports pick up edits.
 function reload {

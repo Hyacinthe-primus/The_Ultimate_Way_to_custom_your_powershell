@@ -35,7 +35,10 @@ param(
     [string]$ConfigDir = (Join-Path $HOME '.config/fastfetch')
 )
 
-if (-not (Get-Command fastfetch -ErrorAction SilentlyContinue)) {
+# Look up the real executable: the profile defines a fastfetch function that calls this script.
+$fastfetchExe = Get-Command fastfetch -CommandType Application -ErrorAction SilentlyContinue |
+    Select-Object -First 1
+if (-not $fastfetchExe) {
     Write-Warning 'fastfetch was not found in PATH. Install it with: winget install fastfetch'
     return
 }
@@ -111,4 +114,4 @@ else {
     }
 }
 
-& fastfetch @fastfetchArgs
+& $fastfetchExe.Source @fastfetchArgs
